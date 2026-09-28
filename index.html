@@ -1,0 +1,992 @@
+﻿<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="K·Bloom">
+<meta name="theme-color" content="#FF5FA0">
+<title>K·Bloom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,700;1,700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#FFFAFB;--bg2:#FFF5F8;--bg-card:#FFFFFF;--bg-inp:#FFE8F2;
+  --acc:#FF5FA0;--acc-s:#FFD6EC;--acc2:#5BC8FF;--acc2s:#D8F0FF;
+  --peach:#FFB870;--lav:#C0AAFF;--mint:#60D8A8;--star:#FFB800;
+  --text:#2D1828;--t2:#8A6478;--t3:#C4A8B8;
+  --bord:#FFD0E4;--sp:#1DB954;
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1A0D16;--bg2:#200F1C;--bg-card:#261524;--bg-inp:#361D30;
+  --acc:#FF7DC0;--acc-s:#3A1028;--acc2:#60CAFF;--acc2s:#1A2A3A;
+  --star:#FFB800;
+  --text:#F8EEF4;--t2:#C8A0B8;--t3:#8A7088;--bord:#401830;color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#1A0D16;--bg2:#200F1C;--bg-card:#261524;--bg-inp:#361D30;
+  --acc:#FF7DC0;--acc-s:#3A1028;--acc2:#60CAFF;--acc2s:#1A2A3A;
+  --star:#FFB800;
+  --text:#F8EEF4;--t2:#C8A0B8;--t3:#8A7088;--bord:#401830;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;}html,body{height:100%;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans JP',system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-tap-highlight-color:transparent;overflow-x:hidden;}
+button{font-family:inherit;cursor:pointer;}a{color:inherit;text-decoration:none;}input{font-family:inherit;}
+.app-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:var(--bg);border-bottom:2px solid var(--bord);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:54px;}
+.logo-wrap{display:flex;align-items:center;gap:6px;}
+.logo{font-family:'Dancing Script',cursive;font-size:26px;font-weight:700;color:var(--text);}
+.logo span{color:var(--acc);}
+.hdr-btn{background:none;border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);transition:background .15s;}
+.hdr-btn:hover{background:var(--bord);}
+.hdr-acts{display:flex;gap:2px;}
+.tab-content{overflow-y:auto;overflow-x:hidden;padding-bottom:calc(62px + env(safe-area-inset-bottom,0px) + 8px);-webkit-overflow-scrolling:touch;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:60;background:var(--bg-card);border-top:2px solid var(--bord);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);height:calc(58px + env(safe-area-inset-bottom,0px));}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:none;border:none;color:var(--t3);font-size:9px;font-weight:500;transition:color .15s;padding:4px 0;}
+.nav-btn svg{display:block;}.nav-btn.active{color:var(--acc);}
+.search-panel{position:fixed;top:54px;left:0;right:0;bottom:calc(58px + env(safe-area-inset-bottom,0px));background:var(--bg);z-index:55;overflow-y:auto;transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .25s,opacity .25s;}
+.search-panel.open{transform:translateY(0);opacity:1;pointer-events:all;}
+.search-bar-area{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--bord);display:flex;gap:10px;align-items:center;}
+.si-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg-inp);border-radius:22px;padding:8px 14px;border:1.5px solid var(--bord);}
+.si-wrap svg{flex-shrink:0;color:var(--t3);}
+#search-input{flex:1;border:none;background:none;color:var(--text);font-size:14px;outline:none;}
+#search-input::placeholder{color:var(--t3);}
+.s-cancel{background:none;border:none;color:var(--acc);font-size:13px;font-weight:700;padding:0;}
+#search-results{padding:8px 0 20px;}
+.s-empty{padding:40px 20px;text-align:center;color:var(--t3);}
+.s-empty-ico{font-size:44px;margin-bottom:10px;}
+.toast{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(20px);background:var(--acc);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:700;z-index:200;opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.hero{margin:14px 16px 0;background:linear-gradient(140deg,#FFABD0 0%,#FFC8E8 45%,#C8D8FF 100%);border-radius:22px;padding:22px 20px 20px;position:relative;overflow:hidden;}
+.hero-sparkle{position:absolute;right:16px;top:12px;font-size:30px;opacity:.7;}
+.hero-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.75);color:var(--acc);font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px;backdrop-filter:blur(4px);}
+.hero-title{font-family:'Playfair Display',serif;font-style:italic;font-size:24px;font-weight:700;color:#2D1828;line-height:1.2;margin-bottom:6px;text-wrap:balance;}
+.hero-desc{font-size:12px;color:rgba(45,24,40,.65);line-height:1.6;}
+.hero-dots{display:flex;gap:6px;margin-top:14px;}
+.hero-dot{width:8px;height:8px;border-radius:50%;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 16px 10px;}
+.sec-tw{display:flex;align-items:center;gap:7px;}
+.sec-ttl{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;font-weight:700;color:var(--text);}
+.sec-more{background:none;border:none;color:var(--acc);font-size:12px;font-weight:700;padding:0;}
+.h-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 16px 4px;scrollbar-width:none;}
+.h-scroll::-webkit-scrollbar{display:none;}
+.tmini{flex-shrink:0;width:128px;background:var(--bg-card);border:1.5px solid var(--bord);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.tmini:active{transform:scale(.96);}
+.tmini-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;}
+.tmini-body{padding:8px 10px 10px;}
+.tmini-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;}
+.tmini-ko{font-size:10px;color:var(--acc);font-weight:600;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;}
+.icard{background:var(--bg-card);border:1.5px solid var(--bord);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .15s;position:relative;user-select:none;}
+.icard:active{transform:scale(.97);}
+.icard-photo{aspect-ratio:3/4;position:relative;overflow:hidden;}
+.icard-photo canvas{display:block;width:100%;height:100%;position:absolute;inset:0;}
+.photo-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,12,24,.68) 0%,transparent 52%);pointer-events:none;}
+.photo-cap{position:absolute;bottom:0;left:0;right:0;padding:10px 10px 11px;}
+.photo-idol{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;}
+.photo-grp{font-size:10px;color:rgba(255,255,255,.72);}
+.like-btn{position:absolute;top:8px;right:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);border:none;display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform .15s;}
+.like-btn:active{transform:scale(.8);}
+.like-btn.liked{background:var(--acc);color:#fff;}
+.viewed-dot{position:absolute;top:8px;left:8px;z-index:2;width:8px;height:8px;background:var(--lav);border-radius:50%;border:2px solid var(--bg-card);}
+.icard-body{padding:9px 11px 11px;}
+.style-chip{display:inline-block;background:var(--acc-s);color:var(--acc);font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-bottom:5px;}
+.hair-diff{display:inline-block;background:var(--acc2s);color:var(--acc2);font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-bottom:5px;}
+.icard-brand{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;}
+.icard-price{font-size:12px;color:var(--t3);font-variant-numeric:tabular-nums;}
+.icard-stars{display:flex;align-items:center;gap:1px;margin-top:3px;}
+.stars-val{color:var(--star);font-size:11px;letter-spacing:.5px;}
+.stars-num{font-size:11px;font-weight:700;color:var(--text);margin-left:2px;}
+.stars-cnt{font-size:10px;color:var(--t3);margin-left:1px;}
+.chip-row{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;}
+.chip-row::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;padding:7px 16px;border-radius:20px;border:1.5px solid var(--bord);background:var(--bg-card);color:var(--t2);font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s;}
+.chip.active{background:var(--acc);border-color:var(--acc);color:#fff;}
+.music-list{display:flex;flex-direction:column;gap:8px;padding:0 16px;}
+.music-row{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1.5px solid var(--bord);border-radius:16px;padding:11px 12px;cursor:pointer;transition:transform .15s;}
+.music-row:active{transform:scale(.98);}
+.music-rank-col{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0;}
+.music-rank{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums;line-height:1;}
+.rank-chg{font-size:9px;font-weight:700;margin-top:1px;}
+.rank-up{color:#22C55E;}.rank-dn{color:#F87171;}.rank-same{color:var(--t3);}
+.rank-new{color:var(--acc2);font-size:8px;}
+.music-thumb{width:52px;height:52px;border-radius:12px;flex-shrink:0;position:relative;overflow:hidden;}
+.music-thumb canvas{position:absolute;inset:0;width:100%;height:100%;}
+.music-info{flex:1;min-width:0;}
+.music-title{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.music-art{font-size:12px;color:var(--t3);margin-top:1px;}
+.music-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;align-items:center;}
+.music-countries{font-size:13px;letter-spacing:1px;}
+.music-member{font-size:10px;color:var(--acc);font-weight:600;}
+.sp-link{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;background:var(--sp);color:#fff;border:none;border-radius:20px;padding:7px 10px;font-size:10px;font-weight:700;text-decoration:none;white-space:nowrap;}
+.news-list{display:flex;flex-direction:column;gap:10px;padding:0 16px;}
+.news-card{background:var(--bg-card);border:1.5px solid var(--bord);border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.news-card:active{transform:scale(.98);}
+.news-thumb{height:110px;position:relative;display:flex;align-items:flex-end;padding:12px;}
+.news-thumb canvas{position:absolute;inset:0;width:100%;height:100%;}
+.news-thumb-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,8,18,.7) 0%,transparent 60%);}
+.news-cat{position:relative;z-index:1;display:inline-block;background:var(--acc);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;}
+.news-body{padding:12px 14px 14px;}
+.news-headline{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:5px;}
+.news-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.news-grp{font-size:11px;color:var(--acc);font-weight:700;}
+.news-date{font-size:11px;color:var(--t3);}
+.news-desc{font-size:12px;color:var(--t2);line-height:1.6;}
+.news-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.news-tag{font-size:10px;background:var(--bg-inp);color:var(--t3);padding:3px 8px;border-radius:8px;}
+.save-panel{padding:16px;}
+.save-empty{padding:50px 20px;text-align:center;color:var(--t3);}
+.save-empty-ico{font-size:50px;margin-bottom:12px;}
+.save-empty-ttl{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.save-empty-txt{font-size:13px;line-height:1.7;}
+.save-section-ttl{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.trend-list{display:flex;flex-direction:column;gap:14px;padding:0 16px;}
+.trend-card{background:var(--bg-card);border:1.5px solid var(--bord);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.trend-card:active{transform:scale(.98);}
+.trend-visual{height:150px;position:relative;overflow:hidden;}
+.trend-visual canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.trend-visual-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(28,12,24,.18) 0%,rgba(28,12,24,.55) 100%);}
+.trend-rank-badge{position:absolute;top:12px;left:14px;font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:rgba(255,255,255,.92);line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+.trend-icon-big{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);font-size:52px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.2));}
+.trend-ko-ov{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.88);letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+.trend-body{padding:14px 16px 16px;}
+.trend-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.trend-ko{font-size:11px;color:var(--acc);font-weight:600;margin-bottom:8px;}
+.trend-desc{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px;}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{font-size:10px;background:var(--bg-inp);color:var(--t3);padding:3px 8px;border-radius:8px;}
+.modal{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;transform:translateY(100%);transition:transform .36s cubic-bezier(.32,.72,0,1);-webkit-overflow-scrolling:touch;}
+.modal.open{transform:translateY(0);}
+.modal-hdr{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg);border-bottom:1.5px solid var(--bord);}
+.back-btn{background:none;border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);font-size:22px;flex-shrink:0;transition:background .15s;}
+.back-btn:hover{background:var(--bord);}
+.modal-ttl{font-size:16px;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.modal-photo{width:100%;aspect-ratio:3/4;max-height:400px;position:relative;overflow:hidden;}
+.modal-photo canvas{display:block;width:100%;height:100%;position:absolute;inset:0;}
+.modal-body{padding:20px 16px 100px;}
+.modal-idol{font-family:'Playfair Display',serif;font-style:italic;font-size:28px;font-weight:700;color:var(--text);line-height:1.1;margin-bottom:3px;}
+.modal-grp{font-size:14px;color:var(--acc);font-weight:700;margin-bottom:6px;}
+.modal-chip{display:inline-block;background:var(--acc-s);color:var(--acc);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+.modal-chip2{display:inline-block;background:var(--acc2s);color:var(--acc2);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+.modal-rating{display:flex;align-items:center;gap:4px;margin-bottom:18px;}
+.items-lbl{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;margin-top:4px;}
+.item-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.item-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);border:1.5px solid var(--bord);border-radius:14px;padding:12px 14px;gap:12px;}
+.shop-row{cursor:pointer;text-decoration:none;color:inherit;transition:background .15s,transform .1s;display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);border:1.5px solid var(--bord);border-radius:14px;padding:12px 14px;gap:12px;}
+.shop-row:active{background:var(--bg-inp);transform:scale(.98);}
+.item-cat{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.item-nm{font-size:13px;font-weight:600;color:var(--text);}
+.item-stars{display:flex;align-items:center;gap:1px;margin-top:2px;}
+.item-right{text-align:right;flex-shrink:0;}
+.item-pr{font-size:14px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.shop-arr{font-size:10px;color:var(--acc);font-weight:700;margin-top:2px;}
+.steps-section{margin-bottom:22px;}
+.step-card{background:var(--bg2);border:1.5px solid var(--bord);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.step-tip{font-size:12px;color:var(--t2);line-height:1.6;}
+.step-point{font-size:10px;background:var(--acc-s);color:var(--acc);padding:2px 8px;border-radius:8px;font-weight:700;margin-top:4px;display:inline-block;}
+.hair-tip-box{background:var(--acc-s);border-radius:14px;padding:14px;margin-bottom:20px;}
+.hair-tip-txt{font-size:13px;color:var(--acc);font-weight:600;line-height:1.7;}
+.modal-tools-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;}
+.tool-chip{background:var(--bg2);border:1.5px solid var(--bord);border-radius:10px;padding:5px 12px;font-size:12px;color:var(--t2);font-weight:500;}
+.similar-ttl{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;font-weight:700;color:var(--text);margin-bottom:14px;}
+.rec-empty{padding:32px 20px;text-align:center;color:var(--t3);}
+.rec-empty-ico{font-size:40px;margin-bottom:10px;}
+.rec-empty-txt{font-size:13px;line-height:1.7;}
+.song-meta-bar{display:flex;gap:0;background:var(--bg2);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+.song-meta-item{flex:1;padding:12px 10px;text-align:center;border-right:1px solid var(--bord);}
+.song-meta-item:last-child{border-right:none;}
+.song-meta-lbl{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px;}
+.song-meta-val{font-size:13px;font-weight:700;color:var(--text);line-height:1.2;}
+.sp-btn-big{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--sp);color:#fff;border-radius:50px;padding:14px 24px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:24px;}
+.sp-btn-big:active{opacity:.85;}
+.artist-rank-badge{display:inline-flex;align-items:center;gap:6px;background:var(--acc);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+.artist-stats{display:flex;background:var(--bg2);border-radius:14px;overflow:hidden;margin-bottom:18px;}
+.artist-stat{flex:1;padding:13px 8px;text-align:center;border-right:1px solid var(--bord);}
+.artist-stat:last-child{border-right:none;}
+.artist-stat-val{font-size:15px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.2;}
+.artist-stat-lbl{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px;}
+.clickable-art{cursor:pointer;color:var(--acc);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-bottom:14px;}
+.clickable-art:active{opacity:.7;}
+.clickable-art-sm{cursor:pointer;color:var(--acc);font-size:12px;font-weight:600;margin-top:1px;display:inline-block;}
+.clickable-art-sm:active{opacity:.7;}
+.spacer{height:8px;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.icard-photo img,.modal-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block;}
+.music-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;}
+@media(prefers-reduced-motion:reduce){.modal,.icard,.news-card,.search-panel,.toast{transition:none;}}
+</style>
+
+<header class="app-header">
+  <div class="logo-wrap">
+    <svg width="30" height="22" viewBox="0 0 30 22" fill="none"><path d="M15 11 C13 7 6 4 3 11 C6 18 13 15 15 11Z" fill="#FFB3D4"/><path d="M15 11 C17 7 24 4 27 11 C24 18 17 15 15 11Z" fill="#FF8FBF"/><ellipse cx="15" cy="11" rx="3.2" ry="2.3" fill="#FF5FA0"/></svg>
+    <div class="logo">K·<span>Bloom</span></div>
+  </div>
+  <div class="hdr-acts">
+    <button class="hdr-btn" onclick="toggleSearch()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    <button class="hdr-btn" onclick="toggleTheme()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+  </div>
+</header>
+
+<div class="search-panel" id="search-panel">
+  <div class="search-bar-area">
+    <div class="si-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="search" id="search-input" placeholder="アイドル・曲名・ブランドを検索..." autocomplete="off" oninput="doSearch(this.value)">
+    </div>
+    <button class="s-cancel" onclick="closeSearch()">キャンセル</button>
+  </div>
+  <div id="search-results"><div class="s-empty"><div class="s-empty-ico">🔍</div><div>アイドル名・グループ名・ブランド名・曲名で検索</div></div></div>
+</div>
+
+<div class="tab-content" id="tab-content">
+  <div class="tab-panel active" id="panel-home"></div>
+  <div class="tab-panel" id="panel-fashion"></div>
+  <div class="tab-panel" id="panel-makeup"></div>
+  <div class="tab-panel" id="panel-music"></div>
+  <div class="tab-panel" id="panel-news"></div>
+  <div class="tab-panel" id="panel-saved"></div>
+  <div class="tab-panel" id="panel-trends"></div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>ホーム</button>
+  <button class="nav-btn" data-tab="fashion"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>ファッション</button>
+  <button class="nav-btn" data-tab="makeup"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>メイク</button>
+  <button class="nav-btn" data-tab="music"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>音楽</button>
+  <button class="nav-btn" data-tab="news"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a4 4 0 01-4-4V6"/><path d="M10 7h8M10 11h8M10 15h4"/></svg>ニュース</button>
+  <button class="nav-btn" data-tab="saved"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>保存</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="detail-modal">
+  <div class="modal-hdr">
+    <button class="back-btn" onclick="closeModal()">&#8592;</button>
+    <span class="modal-ttl" id="modal-ttl"></span>
+  </div>
+  <div id="modal-content"></div>
+</div>
+
+<script>
+const FASHION=[
+  {id:'f1',idol:'Haerin',group:'NewJeans',styleTag:'ストリートカジュアル',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',rating:4.6,reviewCount:342,colors:['#A8D8FF','#B8F8E0'],tags:['ストリート','カジュアル','レイヤード','ニュートラル'],items:[
+    {cat:'アウター',name:'Moncler ダウンベスト',price:'¥85,000',rating:4.5,shopUrl:'https://www.moncler.com/ja-jp/'},
+    {cat:'トップス',name:'ACNE STUDIOS ロゴTシャツ',price:'¥18,500',rating:4.3,shopUrl:'https://www.acnestudios.com/jp/'},
+    {cat:'ボトムス',name:'Dickies ワイドカーゴパンツ',price:'¥5,980',rating:4.6,shopUrl:'https://www.dickies.jp/'},
+    {cat:'シューズ',name:'New Balance 530',price:'¥14,300',rating:4.7,shopUrl:'https://www.newbalance.co.jp/'}]},
+  {id:'f2',idol:'JENNIE',group:'BLACKPINK',styleTag:'Y2Kフェミニン',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',rating:4.8,reviewCount:892,colors:['#FFD4A0','#FFB0CC'],tags:['Y2K','フェミニン','ラグジュアリー','ミニスカ'],items:[
+    {cat:'トップス',name:'CHANEL クロップトップ',price:'¥198,000',rating:4.9,shopUrl:'https://www.chanel.com/jp/'},
+    {cat:'ボトムス',name:'Miu Miu ミニスカート',price:'¥120,000',rating:4.7,shopUrl:'https://www.miumiu.com/ja-jp/'},
+    {cat:'バッグ',name:'CHANEL ミニマトラッセ',price:'¥420,000',rating:4.9,shopUrl:'https://www.chanel.com/jp/'},
+    {cat:'シューズ',name:'Manolo Blahnik パンプス',price:'¥85,000',rating:4.6,shopUrl:'https://www.manoloblahnik.com/jp/'}]},
+  {id:'f3',idol:'KARINA',group:'aespa',styleTag:'フューチャリスティック',photoUrl:'https://img.youtube.com/vi/phuiiNCxRMg/maxresdefault.jpg',rating:4.7,reviewCount:528,colors:['#D8C8FF','#C0E4FF'],tags:['フューチャリスティック','テック','クール','モノトーン'],items:[
+    {cat:'セットアップ',name:'Balenciaga トラックスーツ',price:'¥245,000',rating:4.5,shopUrl:'https://www.balenciaga.com/ja-jp/'},
+    {cat:'シューズ',name:'Balenciaga Triple S',price:'¥112,000',rating:4.4,shopUrl:'https://www.balenciaga.com/ja-jp/'},
+    {cat:'アクセ',name:'Y2K チョーカー',price:'¥3,200',rating:4.2,shopUrl:'https://zozo.jp/'}]},
+  {id:'f4',idol:'Wonyoung',group:'IVE',styleTag:'クリーンガール',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',rating:4.8,reviewCount:712,colors:['#FFA8A8','#FFE8A8'],tags:['クリーンガール','フェミニン','エレガント','ワンピース'],items:[
+    {cat:'ワンピース',name:'Zimmermann フローラルドレス',price:'¥68,000',rating:4.8,shopUrl:'https://www.zimmermannwear.com/'},
+    {cat:'バッグ',name:'Bottega Veneta ポーチ',price:'¥156,000',rating:4.7,shopUrl:'https://www.bottegaveneta.com/ja-jp/'},
+    {cat:'シューズ',name:'Roger Vivier メリージェーン',price:'¥92,000',rating:4.6,shopUrl:'https://www.rogervivier.com/ja-jp/'}]},
+  {id:'f5',idol:'Chaewon',group:'LE SSERAFIM',styleTag:'スポーティシック',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',rating:4.4,reviewCount:468,colors:['#FFD880','#FF9860'],tags:['スポーティ','ストリート','カジュアル','ロゴ'],items:[
+    {cat:'ジャケット',name:'MLB ウィンドブレーカー',price:'¥12,800',rating:4.5,shopUrl:'https://mlb-korea.co.jp/'},
+    {cat:'トップス',name:'Adidas クロップTシャツ',price:'¥5,500',rating:4.4,shopUrl:'https://www.adidas.co.jp/'},
+    {cat:'ボトムス',name:'NIKE スウェットパンツ',price:'¥8,800',rating:4.3,shopUrl:'https://www.nike.com/jp/'},
+    {cat:'シューズ',name:'New Balance 2002R',price:'¥17,600',rating:4.8,shopUrl:'https://www.newbalance.co.jp/'}]},
+  {id:'f6',idol:'Nayeon',group:'TWICE',styleTag:'ガーリーポップ',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFF0B8'],tags:['ガーリー','フェミニン','かわいい','パステル'],items:[
+    {cat:'トップス',name:'Coquette リボンブラウス',price:'¥8,900',rating:4.3,shopUrl:'https://zozo.jp/'},
+    {cat:'ボトムス',name:'フラウンス ミニスカート',price:'¥6,500',rating:4.2,shopUrl:'https://zozo.jp/'},
+    {cat:'バッグ',name:'COACH ポシェット',price:'¥28,000',rating:4.5,shopUrl:'https://www.coach.com/ja_JP/'}]},
+  {id:'f7',idol:'Minji',group:'NewJeans',styleTag:'クールカジュアル',photoUrl:'https://img.youtube.com/vi/11cta61wi0g/maxresdefault.jpg',rating:4.5,reviewCount:412,colors:['#B0A0FF','#C8D8FF'],tags:['クール','カジュアル','ストリート','デニム'],items:[
+    {cat:'アウター',name:'Carhartt デニムジャケット',price:'¥22,000',rating:4.6,shopUrl:'https://www.carhartt.com/'},
+    {cat:'トップス',name:'KAWS コラボTシャツ',price:'¥9,800',rating:4.4,shopUrl:'https://kawsone.com/'},
+    {cat:'ボトムス',name:'Dickies ベイカーパンツ',price:'¥5,980',rating:4.6,shopUrl:'https://www.dickies.jp/'},
+    {cat:'シューズ',name:'Vans Old Skool',price:'¥8,800',rating:4.7,shopUrl:'https://www.vans.co.jp/'}]},
+  {id:'f8',idol:'Kazuha',group:'LE SSERAFIM',styleTag:'モードエレガント',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',rating:4.7,reviewCount:592,colors:['#80C8FF','#B0E8FF'],tags:['エレガント','モード','ラグジュアリー','ワンカラー'],items:[
+    {cat:'ドレス',name:'Saint Laurent スリップドレス',price:'¥185,000',rating:4.6,shopUrl:'https://www.ysl.com/ja-jp/'},
+    {cat:'バッグ',name:'CELINE トリオンフ',price:'¥270,000',rating:4.8,shopUrl:'https://www.celine.com/ja-jp/'},
+    {cat:'シューズ',name:'Aquazzura サンダル',price:'¥78,000',rating:4.5,shopUrl:'https://www.aquazzura.com/'}]}
+];
+
+const MAKEUP=[
+  {id:'m1',idol:'Haerin',group:'NewJeans',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',lookName:'グラスシン肌メイク',lookDesc:'ガラスのように透き通った韓国美肌。保湿を重ねて艶感を最大化するのがポイント。',rating:4.7,reviewCount:518,colors:['#A8D8FF','#C8F8E8'],tags:['ナチュラル','グラスシン','透明感','ミニマル'],
+   steps:[{n:1,t:'スキンケアprep',tip:'化粧水を手のひらで温めてから塗る。コットンNGで手押し！水分量が艶の命。',pt:'保湿が命'},
+          {n:2,t:'下地を薄く',tip:'BBクリームを少量手にとり、内側から外側へ。首まで忘れずに。',pt:'薄く均一に'},
+          {n:3,t:'ファンデを重ねる',tip:'スポンジをポンポン押し当てるだけ。こすらないのが韓国式。',pt:'たたき込む'},
+          {n:4,t:'ハイライトで仕上げ',tip:'鼻先・頬骨・目頭のCゾーンに少量。光を集めてガラス肌に。',pt:'光を集める'}],
+   items:[
+    {cat:'ベース',name:'Luminous Silk Foundation',brand:'Giorgio Armani',price:'¥11,220',rating:4.8,shopUrl:'https://www.giorgioarmanibeauty-jp.com/'},
+    {cat:'リップ',name:'Lip Sleeping Mask ピーチ',brand:'Laneige',price:'¥2,860',rating:4.9,shopUrl:'https://jp.laneige.com/'},
+    {cat:'下地',name:'BBクリーム No.21',brand:'MISSHA',price:'¥1,650',rating:4.5,shopUrl:'https://jp.missha.com/'},
+    {cat:'セット',name:'Ultra HD Loose Powder',brand:'Make Up For Ever',price:'¥4,620',rating:4.6,shopUrl:'https://www.makeupforever.com/jp/'}],
+   tools:[
+    {cat:'スポンジ',name:'Beautyblender オリジナル',price:'¥2,640',rating:4.9,shopUrl:'https://beautyblender.com/'},
+    {cat:'ブラシ',name:'NARS #15 カブキブラシ',price:'¥5,500',rating:4.7,shopUrl:'https://www.narscosmetics.co.jp/'}],
+   care:[
+    {cat:'化粧水',name:'Water Bank Blue Hyaluronic Toner',brand:'Laneige',price:'¥4,400',rating:4.6,shopUrl:'https://jp.laneige.com/'},
+    {cat:'美容液',name:'Advanced Snail 96 Mucin Essence',brand:'COSRX',price:'¥2,420',rating:4.8,shopUrl:'https://cosrx.co.kr/'}]},
+  {id:'m2',idol:'LISA',group:'BLACKPINK',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',lookName:'スモーキーアイメイク',lookDesc:'セクシーでクールな目元。暗めのアイシャドウをぼかしてつけるのが韓国流。',rating:4.6,reviewCount:436,colors:['#C0B8FF','#E0B0FF'],tags:['スモーキー','クール','グラマラス','ダーク'],
+   steps:[{n:1,t:'アイベース塗布',tip:'まぶた全体にアイプライマーを。これがないと時間で消える！',pt:'プライマー必須'},
+          {n:2,t:'ベースカラー',tip:'明るめのブラウンをブラシで目全体に広げる。',pt:'広く薄く'},
+          {n:3,t:'スモーキーをのせる',tip:'濃いブラウン〜黒を目のキワに。指でぼかすと自然になる。',pt:'指でぼかす'},
+          {n:4,t:'アイライン引き',tip:'上まぶた際に細くライン。跳ね上げはお好みで。',pt:'キワだけ細く'}],
+   items:[
+    {cat:'アイシャドウ',name:'Warm Neutral Palette',brand:'Charlotte Tilbury',price:'¥8,580',rating:4.7,shopUrl:'https://www.charlottetilbury.com/jp/'},
+    {cat:'アイライナー',name:'Stay All Day Liner',brand:'Stila',price:'¥2,860',rating:4.5,shopUrl:'https://stilacosmetics.com/'},
+    {cat:'マスカラ',name:'Better Than Sex Mascara',brand:'Too Faced',price:'¥3,740',rating:4.8,shopUrl:'https://www.toofaced.com/'},
+    {cat:'リップ',name:'Pillow Lips Liner',brand:'Charlotte Tilbury',price:'¥3,520',rating:4.6,shopUrl:'https://www.charlottetilbury.com/jp/'}],
+   tools:[
+    {cat:'アイブラシ',name:'Sigma E25 ブレンディングブラシ',price:'¥2,200',rating:4.8,shopUrl:'https://www.sigmabeauty.com/'},
+    {cat:'スマッジブラシ',name:'SUQQU スマッジブラシ',price:'¥3,300',rating:4.6,shopUrl:'https://www.suqqu.com/ja-jp/'}],
+   care:[
+    {cat:'目元美容液',name:'FlashPatch Eye Gels',brand:'Patchology',price:'¥2,200',rating:4.5,shopUrl:'https://patchology.com/'},
+    {cat:'クレンジング',name:'薬用ディープクレンジングオイル',brand:'DHC',price:'¥1,540',rating:4.7,shopUrl:'https://www.dhcj.com/'}]},
+  {id:'m3',idol:'WINTER',group:'aespa',photoUrl:'https://img.youtube.com/vi/jWQx2f-CErU/maxresdefault.jpg',lookName:'Y2Kグリッターメイク',lookDesc:'2000年代リバイバルのキラキラ目元。グリッターを涙袋にのせるだけで映える。',rating:4.5,reviewCount:328,colors:['#FFD0E8','#E8C8FF'],tags:['Y2K','グリッター','キラキラ','フェミニン'],
+   steps:[{n:1,t:'グリッター下準備',tip:'涙袋部分にアイプライマーを塗っておく。グリッターが落ちにくくなる。',pt:'密着度UP'},
+          {n:2,t:'グリッターをON',tip:'指先でグリッターを少量取り、涙袋の目頭から目尻へトントンと。',pt:'指でポンポン'},
+          {n:3,t:'リップをぽってりに',tip:'リップライナーで輪郭を少し大きめに描いてからグロスで仕上げ。',pt:'大きめが韓国式'},
+          {n:4,t:'ハイライトで完成',tip:'鼻先とキューピッドボウにハイライト。立体感が出る。',pt:'鼻先が重要'}],
+   items:[
+    {cat:'グリッター',name:'Bio Glitter ピンクゴールド',brand:'EcoStardust',price:'¥1,980',rating:4.4,shopUrl:'https://ecostardust.com/'},
+    {cat:'リップライナー',name:'Retractable Lip Liner',brand:'NYX',price:'¥1,540',rating:4.5,shopUrl:'https://nyxcosmetics.co.jp/'},
+    {cat:'グロス',name:'Plumping Gloss ベビーピンク',brand:'3CE',price:'¥2,420',rating:4.6,shopUrl:'https://www.stylenanda.com/'},
+    {cat:'ハイライター',name:'Beam Highlighting Powder',brand:'RMS Beauty',price:'¥5,280',rating:4.7,shopUrl:'https://rmsbeauty.com/'}],
+   tools:[
+    {cat:'グリッターブラシ',name:'ファングリッターブラシ',price:'¥1,650',rating:4.3,shopUrl:'https://www.sephora.co.jp/'},
+    {cat:'フィンガーブラシ',name:'シリコンアイシャドウブラシ',price:'¥880',rating:4.2,shopUrl:'https://zozo.jp/'}],
+   care:[
+    {cat:'アイプライマー',name:'Eyeshadow Base Primer',brand:'NYX',price:'¥1,100',rating:4.5,shopUrl:'https://nyxcosmetics.co.jp/'},
+    {cat:'フェイスミスト',name:'フェイシャルスプレー ラベンダー',brand:'Mario Badescu',price:'¥2,200',rating:4.7,shopUrl:'https://mariobadescu.com/'}]},
+  {id:'m4',idol:'Yujin',group:'IVE',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',lookName:'ノームコアメイク',lookDesc:'頑張ってない風に見える、実は計算されたミニマルメイク。肌感が命。',rating:4.4,reviewCount:298,colors:['#A8E8C0','#80D8B0'],tags:['ナチュラル','ノームコア','クリーン','シンプル'],
+   steps:[{n:1,t:'スキントーン補正',tip:'肌のくすみが気になる部分だけコンシーラーでカバー。全体に塗らない。',pt:'部分カバーのみ'},
+          {n:2,t:'チークを先に',tip:'スキンティントやチークを先に塗ることで自然な血色感に。',pt:'ベース前にOK'},
+          {n:3,t:'眉毛を整える',tip:'眉マスカラで毛流れを整えるだけ。書き足すのは最小限に。',pt:'毛流れが命'},
+          {n:4,t:'リップでまとめる',tip:'色のついたリップバームをサッと一塗り。ツヤが出てナチュラルに。',pt:'バームで十分'}],
+   items:[
+    {cat:'ベース',name:'Skin Tint SPF30',brand:'Ere Perez',price:'¥5,060',rating:4.5,shopUrl:'https://ereperez.com/'},
+    {cat:'チーク',name:'Cheek & Lip テラコッタ',brand:'RMS Beauty',price:'¥4,620',rating:4.6,shopUrl:'https://rmsbeauty.com/'},
+    {cat:'ブロウ',name:'Fluffy Brow Gel',brand:'Benefit',price:'¥3,960',rating:4.7,shopUrl:'https://www.benefitcosmetics.com/ja-jp/'},
+    {cat:'リップ',name:'Tinted Lip Balm',brand:'Clinique',price:'¥2,200',rating:4.5,shopUrl:'https://clinique.co.jp/'}],
+   tools:[
+    {cat:'チークブラシ',name:'PRO ふわふわチークブラシ',price:'¥2,640',rating:4.6,shopUrl:'https://www.sephora.co.jp/'},
+    {cat:'眉コーム',name:'眉ブラシ＆コーム',brand:'MUJI',price:'¥550',rating:4.3,shopUrl:'https://www.muji.com/jp/'}],
+   care:[
+    {cat:'日焼け止め',name:'パーフェクトUV スキンケアミルク',brand:'ANESSA',price:'¥2,200',rating:4.8,shopUrl:'https://www.shiseido.co.jp/anessa/'},
+    {cat:'セラム',name:'グリーンティーシードセラム',brand:'INNISFREE',price:'¥2,860',rating:4.6,shopUrl:'https://jp.innisfree.com/'}]},
+  {id:'m5',idol:'Chaewon',group:'LE SSERAFIM',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',lookName:'オルチャンアイメイク',lookDesc:'韓国アイドルの特徴的な涙袋＆くっきり二重。アイライナーの引き方が秘訣。',rating:4.6,reviewCount:524,colors:['#FFD880','#FFAA60'],tags:['オルチャン','かわいい','涙袋','韓国風'],
+   steps:[{n:1,t:'二重テープ',tip:'奥二重や一重の人は二重テープで幅を調整。韓国では普通のメイク術。',pt:'二重幅が決め手'},
+          {n:2,t:'涙袋を作る',tip:'薄いベージュのシャドウを涙袋の位置に。下から指でぼかして立体感を出す。',pt:'ぼかしが重要'},
+          {n:3,t:'インラインを引く',tip:'上まつ毛の根本（インライン）にペンシルで細く。目が自然に大きく見える。',pt:'根本をしっかり'},
+          {n:4,t:'マスカラで仕上げ',tip:'下まつ毛にもマスカラを。涙袋効果がグッと上がる。',pt:'下まつ毛必須'}],
+   items:[
+    {cat:'アイシャドウ',name:'Heartsome Eye Palette',brand:'rom&nd',price:'¥2,640',rating:4.7,shopUrl:'https://www.romand.us/'},
+    {cat:'涙袋ライナー',name:'Ink Liner カーキブラウン',brand:'Clio',price:'¥1,760',rating:4.6,shopUrl:'https://www.cliocosmetics.com/'},
+    {cat:'マスカラ',name:'Perfect Tubing Mascara',brand:'Heroine Make',price:'¥1,320',rating:4.5,shopUrl:'https://heroinemake.jp/'},
+    {cat:'コンシーラー',name:'Fit Me Concealer',brand:'Maybelline',price:'¥1,188',rating:4.4,shopUrl:'https://www.maybelline.co.jp/'}],
+   tools:[
+    {cat:'涙袋ブラシ',name:'Clio Sha-Sha ライナーブラシ',price:'¥1,100',rating:4.5,shopUrl:'https://www.cliocosmetics.com/'},
+    {cat:'スポンジチップ',name:'アイカラーブラシ',brand:'SHISEIDO',price:'¥880',rating:4.3,shopUrl:'https://www.shiseido.co.jp/'}],
+   care:[
+    {cat:'目元クリーム',name:'Cicapair アイクリーム',brand:'Dr.Jart+',price:'¥3,960',rating:4.6,shopUrl:'https://www.drjart.com/'},
+    {cat:'シートマスク',name:'ハニールミナスマスク',brand:'JM Solution',price:'¥2,200',rating:4.7,shopUrl:'https://www.jmsolution.com/'}]},
+  {id:'m6',idol:'Nayeon',group:'TWICE',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',lookName:'ドールメイク',lookDesc:'ふんわりかわいいお人形みたいな仕上がり。ピンクのチークとグロスで完成。',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFD8B8'],tags:['ドール','かわいい','ピンク','フェミニン'],
+   steps:[{n:1,t:'透明感ベース',tip:'ピンク系下地でくすみを飛ばす。白浮きしない薄いピンクが正解。',pt:'ピンク下地'},
+          {n:2,t:'チークを高めに',tip:'頬骨より少し高い位置（目の下）にピンクチークをふんわり。',pt:'目の下に高め'},
+          {n:3,t:'目元をかわいく',tip:'下まぶたにピンク系シャドウを指でポンポン。眠そうな目がかわいく見える。',pt:'下まぶたがPOINT'},
+          {n:4,t:'リップはぷっくりと',tip:'リップグロスをしっかりのせて、ぷっくりした唇に。',pt:'グロス多めに'}],
+   items:[
+    {cat:'チーク',name:'Baby Pink Blusher',brand:'Etude House',price:'¥1,320',rating:4.5,shopUrl:'https://www.etudehouse.jp/'},
+    {cat:'リップ',name:'Jelly Lip Tint ピーチピンク',brand:'Peripera',price:'¥1,430',rating:4.6,shopUrl:'https://peripera.co.kr/'},
+    {cat:'ハイライト',name:'Dewy Glow Illuminator',brand:'BECCA',price:'¥4,180',rating:4.7,shopUrl:'https://www.sephora.co.jp/'},
+    {cat:'マスカラ',name:'Lash Princess Mascara',brand:"L'Oreal",price:'¥1,540',rating:4.5,shopUrl:'https://www.loreal-paris.co.jp/'}],
+   tools:[
+    {cat:'パウダーブラシ',name:'S506 パウダーブラシ',brand:'HAKUHODO',price:'¥5,500',rating:4.9,shopUrl:'https://www.hakuhodo.bz/'},
+    {cat:'チークブラシ',name:'ブラッシュブラシ',brand:'BOBBI BROWN',price:'¥4,400',rating:4.7,shopUrl:'https://www.bobbibrowncosmetics.com/jp/'}],
+   care:[
+    {cat:'保湿クリーム',name:'プロティニ ポリペプチドクリーム',brand:'Drunk Elephant',price:'¥9,680',rating:4.8,shopUrl:'https://www.drunkelephant.com/'},
+    {cat:'リップケア',name:'リップスリーピングマスク バニラ',brand:'Laneige',price:'¥2,640',rating:4.9,shopUrl:'https://jp.laneige.com/'}]}
+];
+
+const HAIR=[
+  {id:'h1',style:'ウルフカット',styleKo:'울프 컷',idol:'Haerin',group:'NewJeans',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',difficulty:'普通',
+   desc:'前髪と毛先のレイヤーが特徴のK-POPアイドルに大人気スタイル。バングとサイドを短く切り、毛先にメリハリをつけることで小顔効果も。',
+   tip:'ストレートアイロンで毛先を少し内巻きにするだけで韓国風に！毎朝5分で完成。',
+   colors:['#A8D8FF','#B8F8E0'],tags:['ウルフ','レイヤー','ショート'],
+   tools:['ストレートアイロン（26mm）','ブロードライヤー','ヘアバーム']},
+  {id:'h2',style:'スパニッシュバング',styleKo:'스페니쉬 뱅',idol:'Wonyoung',group:'IVE',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',difficulty:'簡単',
+   desc:'韓国で超人気の前髪スタイル。スタイリング剤で前髪を二分割して細い毛束を作るだけで完成。ヨーロッパ女優みたいな雰囲気に。',
+   tip:'前髪を少し湿らせてからヘアクリームで束感を作ろう！ドライヤーは不要。',
+   colors:['#FFA8A8','#FFE8A8'],tags:['バング','前髪','ガーリー'],
+   tools:['ヘアスタイリングクリーム','細コーム','ヘアピン']},
+  {id:'h3',style:'シースルーバング',styleKo:'시스루 뱅',idol:'Chaewon',group:'LE SSERAFIM',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',difficulty:'普通',
+   desc:'透け感のある薄い前髪。韓国アイドルの定番スタイルで、目が少し透けて見えるくらいの薄さが正解。清楚でナチュラルな印象に。',
+   tip:'前髪を少量ずつ取り、コテで根本から軽く巻くと自然なシースルーに。',
+   colors:['#FFD880','#FF9860'],tags:['シースルー','前髪','ナチュラル'],
+   tools:['コテ（細め）','アイロン用スタイリング剤','ヘアスプレー']},
+  {id:'h4',style:'クリーンポニーテール',styleKo:'클린 포니테일',idol:'KARINA',group:'aespa',photoUrl:'https://img.youtube.com/vi/phuiiNCxRMg/maxresdefault.jpg',difficulty:'簡単',
+   desc:'K-POPアイドルが好む高め位置のポニーテール。サイドの毛をすっきりまとめて、ほんの少しだけ後れ毛を出すのが韓国流のこなれ感。',
+   tip:'ゴムで結んだあと、少しだけ毛束を引き出してルーズ感を演出しよう！',
+   colors:['#D8C8FF','#C0E4FF'],tags:['ポニー','クリーン','クール'],
+   tools:['ヘアゴム（太め）','ヘアピン','スタイリングジェル']},
+  {id:'h5',style:'ロング外ハネ',styleKo:'아웃컬 스타일',idol:'JENNIE',group:'BLACKPINK',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',difficulty:'普通',
+   desc:'ロングヘアを外向きにカールした女性らしいスタイル。全体ではなく毛先10〜15cmだけを外巻きにするのがJENNIEらしいさり気なさ。',
+   tip:'コテで毛先だけ外巻き。仕上げにヘアオイルをつけると艶やかで洗練された印象に！',
+   colors:['#FFD4A0','#FFB0CC'],tags:['ロング','外ハネ','フェミニン'],
+   tools:['コテ（32mm）','ヘアオイル','ブラシ']},
+  {id:'h6',style:'ハーフアップお団子',styleKo:'하프업 번',idol:'Nayeon',group:'TWICE',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',difficulty:'簡単',
+   desc:'上半分をゆるくお団子にするハーフアップスタイル。完璧に作り込まず、ほどよくルーズに崩すのが韓国流でかわいい。',
+   tip:'お団子は少しルーズに作るのが正解。ピンで固定して、数本後れ毛を出せば完成！',
+   colors:['#FFB8CC','#FFF0B8'],tags:['ハーフアップ','お団子','かわいい'],
+   tools:['ヘアゴム（細め）','Uピン','ヘアバーム']}
+];
+
+const MUSIC=[
+  {id:'mu1',rank:1,rankChg:2,ytid:'V1Lr-_AxeR8',title:'BOOMPALA',artist:'LE SSERAFIM',topMember:'Chaewon',countries:['🇰🇷','🇺🇸','🇯🇵','🇧🇷'],tags:['ポップ','ダンス','パワフル'],colors:['#FFD880','#FF9860'],releaseDate:'2026.05.01',plays:'3.2億回',album:'PUREFLOW pt.1',spotifyUrl:'https://open.spotify.com/artist/4SpbR6yFEvexJuaBpgAU5p'},
+  {id:'mu2',rank:2,rankChg:-1,ytid:'2GJfWMYCWY0',title:'GO',artist:'BLACKPINK',topMember:'JENNIE',countries:['🇰🇷','🇺🇸','🇫🇷','🇦🇺'],tags:['パワフル','グラマラス','クール'],colors:['#FFD4A0','#FFB0C8'],releaseDate:'2026.02.27',plays:'5.8億回',album:'DEADLINE',spotifyUrl:'https://open.spotify.com/album/2SrWldMz9dfCB7kAGQNbcC'},
+  {id:'mu3',rank:3,rankChg:1,ytid:'83C3TZ4Zm_o',title:'LEMONADE',artist:'aespa',topMember:'KARINA',countries:['🇰🇷','🇺🇸','🇯🇵','🇫🇷'],tags:['エレクトロ','テック','クール'],colors:['#C8C0FF','#9870FF'],releaseDate:'2026.05.29',plays:'2.8億回',album:'LEMONADE',spotifyUrl:'https://open.spotify.com/artist/0GjEhVr4XmOn6jG7DziDP3'},
+  {id:'mu4',rank:4,rankChg:3,ytid:'1Lmy7qwmSMc',title:'BLACKHOLE',artist:'IVE',topMember:'Wonyoung',countries:['🇰🇷','🇯🇵','🇺🇸','🇹🇭'],tags:['パワフル','ダーク','エレガント'],colors:['#FFA8A8','#A8A8FF'],releaseDate:'2026.02.23',plays:'2.1億回',album:'Revive+',spotifyUrl:'https://open.spotify.com/artist/6RHTUrRF63xao58xh9FXYJ'},
+  {id:'mu5',rank:5,rankChg:'NEW',ytid:'27C4pfRsf9g',title:'ICONIC BY MISTAKE',artist:'LE SSERAFIM×ILLIT×KATSEYE',topMember:'Chaewon',countries:['🇺🇸','🇰🇷','🇬🇧','🇦🇺'],tags:['コラボ','ポップ','フレッシュ'],colors:['#FFD880','#FFB8D0'],releaseDate:'2026.06.12',plays:'1.8億回',album:'SINGLE',spotifyUrl:'https://open.spotify.com/artist/4SpbR6yFEvexJuaBpgAU5p'},
+  {id:'mu6',rank:6,rankChg:1,ytid:'QmJbHPYx97M',title:'CHOOM',artist:'BABYMONSTER',topMember:'Ruka',countries:['🇯🇵','🇰🇷','🇺🇸','🇹🇭'],tags:['ヒップホップ','ダンス','パワフル'],colors:['#C8C0FF','#A8E8C0'],releaseDate:'2026.05.04',plays:'1.6億回',album:'CHOOM',spotifyUrl:'https://open.spotify.com/artist/55pj2FiWRVnMCFoFOf7pGV'},
+  {id:'mu7',rank:7,rankChg:0,ytid:'ZncbtRo7RXs',title:'Supernatural',artist:'NewJeans',topMember:'Haerin',countries:['🇯🇵','🇰🇷','🇧🇷','🇹🇭'],tags:['ポップ','レトロ','フレッシュ'],colors:['#A8D8FF','#FFD4B8'],releaseDate:'2024.07.21',plays:'2.4億回',album:'Get Up',spotifyUrl:'https://open.spotify.com/track/1cMa9lfzovyXXFmHHl2Ot0'},
+  {id:'mu8',rank:8,rankChg:-2,ytid:'gQlMMD8auMs',title:'Pink Venom',artist:'BLACKPINK',topMember:'JENNIE',countries:['🇰🇷','🇺🇸','🇫🇷','🇦🇺'],tags:['Y2K','パワフル','グラマラス'],colors:['#FFD8A0','#FFB0C8'],releaseDate:'2022.08.19',plays:'4.5億回',album:'BORN PINK',spotifyUrl:'https://open.spotify.com/track/6gVRuFGhxVWYDGvqNWH1J0'}
+];
+
+const ARTISTS={
+  'NewJeans':{worldRank:8,monthlyListeners:'40.2M',followers:'16.8M',debut:'2022.07.22',genre:['K-POP','インディーポップ','R&B'],bio:'2022年デビューの4人組K-POPグループ。2026年夏、4人で新章スタート。Y2Kとレトロなサウンドで世界を席巻。フレッシュなビジュアルと音楽性で韓国・日本・欧米でロングラン人気を誇る。',colors:['#A8D8FF','#B8F8E0'],photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg'},
+  'aespa':{worldRank:10,monthlyListeners:'48.6M',followers:'18.4M',debut:'2020.11.17',genre:['K-POP','エレクトロポップ','テックポップ'],bio:'SM Entertainmentの4人組グループ。2026年5月リリースの「LEMONADE」がBillboard 200トップ10入りを記録。メタバース世界観と圧倒的なパフォーマンスで次世代K-POPをリード。',colors:['#D8C8FF','#C0E4FF'],photoUrl:'https://img.youtube.com/vi/83C3TZ4Zm_o/maxresdefault.jpg'},
+  'BLACKPINK':{worldRank:2,monthlyListeners:'92.4M',followers:'38.6M',debut:'2016.08.08',genre:['K-POP','ポップ','ヒップホップ'],bio:'YGの4人組グループ。2026年2月のカムバックアルバム「DEADLINE」が初日販売数ガールズグループ歴代1位の記録を破る大ヒット。DEADLINEワールドツアーも大成功。',colors:['#FFD4A0','#FFB0CC'],photoUrl:'https://img.youtube.com/vi/2GJfWMYCWY0/maxresdefault.jpg'},
+  'LE SSERAFIM':{worldRank:11,monthlyListeners:'42.8M',followers:'14.6M',debut:'2022.05.02',genre:['K-POP','ポップ','ダンスポップ'],bio:'HYBEの5人組グループ。2026年「BOOMPALA」が大ヒット。9月にはK-POPガールズグループ初のiHeartRadio Music Festivalに出演。PUREFLOWワールドツアーも大成功。',colors:['#FFD880','#FF9860'],photoUrl:'https://img.youtube.com/vi/V1Lr-_AxeR8/maxresdefault.jpg'},
+  'ILLIT':{worldRank:20,monthlyListeners:'28.4M',followers:'10.2M',debut:'2024.03.25',genre:['K-POP','バブルポップ','ポップ'],bio:'HYBEの5人組次世代グループ。デビュー曲「Magnetic」が世界的バイラルヒット。2026年はLE SSERAFIM×KATSEYEとのコラボ「ICONIC BY MISTAKE」がBillboard Hot 100入りを果たす。',colors:['#FFD4B8','#FFB8D0'],photoUrl:'https://img.youtube.com/vi/27C4pfRsf9g/maxresdefault.jpg'},
+  'IVE':{worldRank:14,monthlyListeners:'34.2M',followers:'13.8M',debut:'2021.12.01',genre:['K-POP','ポップ','ダンスポップ'],bio:'スターシップエンターテインメントの6人組グループ。2026年「BLACKHOLE」「Bang Bang」が連続パーフェクトオールキルを記録。Revive+アルバムも大成功。',colors:['#FFA8A8','#A8A8FF'],photoUrl:'https://img.youtube.com/vi/1Lmy7qwmSMc/maxresdefault.jpg'},
+  'TWICE':{worldRank:9,monthlyListeners:'46.8M',followers:'18.2M',debut:'2015.10.20',genre:['K-POP','ポップ','ダンスポップ'],bio:'JYPの9人組グループ。デビュー11年目の2026年もアジア全域で絶大な人気を誇るK-POPレジェンド。日本でも圧倒的な動員力を持ち、ガールズグループ最多スタジアム公演記録を更新中。',colors:['#FFB8CC','#FFF0B8'],photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg'},
+  'BABYMONSTER':{worldRank:22,monthlyListeners:'24.8M',followers:'9.2M',debut:'2023.11.27',genre:['K-POP','ヒップホップ','R&B'],bio:'YGエンターテインメントの7人組グループ。2026年5月リリース「CHOOM」が世界中でバイラルヒット。力強いラップとダンスパフォーマンスで次世代K-POPを牽引する注目グループ。',colors:['#C8C0FF','#A8E8C0'],photoUrl:'https://img.youtube.com/vi/QmJbHPYx97M/maxresdefault.jpg'}
+};
+
+const NEWS=[
+  {id:'n1',emoji:'🎤',cat:'フェス',group:'LE SSERAFIM',headline:'LE SSERAFIM、K-POPガールズグループ初のiHeartRadio出演！',date:'2026.09.22',desc:'LE SSERAFIMがアメリカの大型音楽フェス「iHeartRadio Music Festival」にK-POPガールズグループとして初出演。会場を圧倒するパフォーマンスが世界に配信された。',tags:['LE SSERAFIM','フェス','アメリカ'],colors:['#FFD880','#FF9860']},
+  {id:'n2',emoji:'🏆',cat:'記録',group:'BLACKPINK',headline:'BLACKPINKのDEADLINE、ガールズグループ初日売上歴代1位を更新',date:'2026.09.15',desc:'BLACKPINKが2月にリリースしたカムバックEP「DEADLINE」が初日で146万枚以上を販売し、ガールズグループの歴代最高初日セールス記録を樹立。',tags:['BLACKPINK','記録','アルバム'],colors:['#FFD4A0','#FFB0CC']},
+  {id:'n3',emoji:'✨',cat:'カムバック',group:'aespa',headline:'aespa「LEMONADE」がBillboard 200トップ10入り！K-POPガールズ初',date:'2026.09.10',desc:'aespaの最新アルバム「LEMONADE」がBillboard 200で10位以内にランクイン。これはK-POPガールズグループとして初の快挙として話題に。',tags:['aespa','Billboard','記録'],colors:['#D8C8FF','#C0E4FF']},
+  {id:'n4',emoji:'💫',cat:'カムバック',group:'NewJeans',headline:'NewJeans、4人体制で新章スタート！2026夏に復活',date:'2026.09.05',desc:'NewJeansがデビュー4周年の2026年7月22日に「2026 Summer of NewJeans」として4人での活動再開を発表。世界中のファンから歓喜の声が殺到している。',tags:['NewJeans','カムバック','2026'],colors:['#A8D8FF','#B8F8E0']},
+  {id:'n5',emoji:'🎵',cat:'コラボ',group:'LE SSERAFIM×ILLIT×KATSEYE',headline:'3グループ夢のコラボ「ICONIC BY MISTAKE」がHot 100入り！',date:'2026.09.01',desc:'LE SSERAFIM・ILLIT・KATSEYEのコラボシングルが6月にリリースされ、Billboard Hot 100の38位にランクイン。K-POP史上でも稀な複数グループ同時Hot 100ランクインを記録。',tags:['コラボ','Billboard','Hot100'],colors:['#FFD880','#FFB8D0']},
+  {id:'n6',emoji:'💃',cat:'リリース',group:'BABYMONSTER',headline:'BABYMONSTER「CHOOM」が世界同時バイラルヒット',date:'2026.08.28',desc:'BABYMONSTERの3rd EP「CHOOM」収録のタイトル曲がリリース直後から世界各地でバイラルヒット。中毒性の高いシンセリフとパワフルなパフォーマンスがSNSを席巻。',tags:['BABYMONSTER','ヒット','バイラル'],colors:['#C8C0FF','#A8E8C0']},
+  {id:'n7',emoji:'👑',cat:'ファッション',group:'',headline:'2026年はガールズグループがラグジュアリーブランドを席巻',date:'2026.08.20',desc:'TatlerAsia誌が発表した2026年ラグジュアリーファッションアンバサダー上位10名のうち7名がK-POPガールズグループメンバーで占められ、K-POPのファッション界への影響力が過去最高に。',tags:['ファッション','ブランド','2026'],colors:['#FFD4A0','#C0AAFF']},
+  {id:'n8',emoji:'💄',cat:'トレンド',group:'',headline:'Y3Kメイクが大流行！クロム・メタリックで未来感を演出',date:'2026.08.15',desc:'K-POPアイドルからインスパイアされた「Y3K（Year 3000）メイク」がSNSで爆発的に拡散。シルバーやライラックのメタリックアイシャドウ＋グロスが今季最注目のトレンド。',tags:['メイク','Y3K','トレンド'],colors:['#C0B8FF','#A8D8FF']}
+];
+
+const TRENDS=[
+  {id:'t1',rank:1,icon:'🤖',name:'Y3Kメイク',nameKo:'Y3K 메이크업（Y3K メイクオプ）',desc:'「Year 3000」をテーマにした未来系メイク。シルバーやライラックのメタリックアイシャドウ、クロムリップ、ホログラフィックハイライトで宇宙的な輝きを演出。aespaとLE SSERAFIMが火付け役。',tags:['メイク','フューチャリスティック','メタリック'],thumbBg:['#C0B8FF','#A8D8FF']},
+  {id:'t2',rank:2,icon:'✨',name:'アイドルブラー肌',nameKo:'아이돌 블러 피부（アイドル ブロ ピブ）',desc:'カメラに映るアイドルのような「無毛穴・超均一」な肌質感。シリコン系下地でテクスチャーを消し、薄付きのカバーファンデを重ねてフィルター越しのようなベースを実現。',tags:['スキンケア','ベースメイク','ツヤ肌'],thumbBg:['#F8D8FF','#C8E8FF']},
+  {id:'t3',rank:3,icon:'💙',name:'アンダーアイブラッシュ',nameKo:'언더아이 블러셔（アンダーアイ ブロショ）',desc:'目の下に涙袋を強調するようにチークを入れる技法が2026年SNSで大爆発。NewJeansメンバーが実践したことで日本でも急速に広まった。',tags:['チーク','アイメイク','かわいい'],thumbBg:['#FFB8D0','#FFD8E8']},
+  {id:'t4',rank:4,icon:'🪞',name:'リキッドメタリックファッション',nameKo:'리퀴드 메탈릭（リキドゥ メタルリク）',desc:'まるで液体金属のようなシルバー・ゴールド素材のドレスやトップスが2026春夏の主役。BLACKPINKのDEADLINEステージ衣装がトレンドに火をつけた。',tags:['ファッション','メタリック','フューチャリスティック'],thumbBg:['#D0D0D0','#C8C0FF']},
+  {id:'t5',rank:5,icon:'👖',name:'ブルートデニム',nameKo:'브루트 데님（ブルトゥ デニム）',desc:'あえて「荒削り感」を残した無加工デニム。ダメージも色落ちもなく、インディゴの濃さが命。デニムオンデニムのセットアップで着こなすのが2026年流。',tags:['ファッション','デニム','ストリート'],thumbBg:['#6080C0','#4060A8']},
+  {id:'t6',rank:6,icon:'🎀',name:'ブロケットコア',nameKo:'블로켓 코어（ブロケッ コオ）',desc:'ブロックコア（ストリート×スポーツ）とコケット（リボン×フェミニン）を融合させた2026年の新ハイブリッドスタイル。ILLITとKATSEYEが代表格で、日本でも「量産型×ワイルド」感が人気。',tags:['ファッション','フェミニン','ストリート'],thumbBg:['#FFB0D0','#FFD8A0']}
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let viewedTags={},savedItems=new Set(),viewedItems=new Set();
+let fashionFilter='すべて',makeupFilter='すべて';
+let searchOpen=false;
+(function(){
+  try{const s=JSON.parse(localStorage.getItem('kbloom_v3')||'{}');
+    viewedTags=s.vt||{};savedItems=new Set(s.saved||[]);viewedItems=new Set(s.viewed||[]);}
+  catch(e){}
+})();
+function save(){try{localStorage.setItem('kbloom_v3',JSON.stringify({vt:viewedTags,saved:[...savedItems],viewed:[...viewedItems]}));}catch(e){}}
+function recordView(item){viewedItems.add(item.id);(item.tags||[]).forEach(t=>{viewedTags[t]=(viewedTags[t]||0)+1;});save();}
+function sc(item){return(item.tags||[]).reduce((s,t)=>s+(viewedTags[t]||0),0);}
+function topRecs(xid,pool,lim){return[...pool].filter(x=>x.id!==xid).sort((a,b)=>sc(b)-sc(a)).slice(0,lim||6);}
+function toggleSave(id,e){
+  e&&e.stopPropagation();
+  if(savedItems.has(id))savedItems.delete(id);else savedItems.add(id);
+  save();
+  document.querySelectorAll(`.like-btn[data-id="${id}"]`).forEach(b=>{
+    b.classList.toggle('liked',savedItems.has(id));
+    b.innerHTML=savedItems.has(id)?'♥':'♡';
+  });
+  showToast(savedItems.has(id)?'コレクションに保存しました ♡':'コレクションから削除しました');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── LONG PRESS ───────────────────────────────────────────────────────────
+let pressTimer=null;
+function startPress(id,e){
+  endPress();
+  pressTimer=setTimeout(()=>{
+    pressTimer=null;
+    if(!savedItems.has(id)){savedItems.add(id);save();}
+    document.querySelectorAll(`.like-btn[data-id="${id}"]`).forEach(b=>{b.classList.add('liked');b.innerHTML='♥';});
+    showToast('コレクションに保存しました ♡');
+    if(navigator.vibrate)navigator.vibrate(40);
+  },550);
+}
+function endPress(){clearTimeout(pressTimer);pressTimer=null;}
+
+// ── CANVAS ──────────────────────────────────────────────────────────────
+function drawCV(cv,cols,ini,w,h){
+  cv.width=w||300;cv.height=h||400;
+  const ctx=cv.getContext('2d'),cw=cv.width,ch=cv.height;
+  const g=ctx.createLinearGradient(0,0,cw*.75,ch);
+  g.addColorStop(0,cols[0]);g.addColorStop(1,cols[1]);
+  ctx.fillStyle=g;ctx.fillRect(0,0,cw,ch);
+  [[.78,.12,.3,.18],[.1,.82,.24,.12],[.42,.45,.16,.07]].forEach(([x,y,r,a])=>{
+    ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(cw*x,ch*y,cw*r,0,6.28);ctx.fill();
+  });
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  [[.18,.2,.048],[.72,.15,.038],[.82,.5,.03],[.28,.7,.042],[.58,.8,.028]].forEach(([x,y,s])=>{
+    ctx.globalAlpha=.5;star5(ctx,cw*x,ch*y,cw*s,cw*s*.42);
+  });
+  [[.62,.3,.055],[.25,.48,.038]].forEach(([x,y,s])=>{
+    ctx.globalAlpha=.38;ctx.fillStyle='rgba(255,255,255,.85)';heartCV(ctx,cw*x,ch*y,cw*s);
+  });
+  bowCV(ctx,cw*.78,ch*.08,cw*.1);
+  ctx.globalAlpha=1;
+  ctx.font=`700 italic ${Math.round(ch*.6)}px Georgia,serif`;
+  ctx.fillStyle='rgba(255,255,255,.2)';ctx.textAlign='right';ctx.textBaseline='bottom';
+  ctx.fillText(ini,cw-8,ch-4);
+}
+function star5(ctx,cx,cy,r1,r2){ctx.beginPath();for(let i=0;i<10;i++){const r=i%2?r2:r1,a=(i*Math.PI/5)-Math.PI/2;i?ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r):ctx.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}ctx.closePath();ctx.fill();}
+function heartCV(ctx,cx,cy,s){ctx.save();ctx.translate(cx,cy);ctx.beginPath();ctx.moveTo(0,s*.3);ctx.bezierCurveTo(-s*.5,-s*.3,-s*1.1,s*.1,-s*1.1,s*.7);ctx.bezierCurveTo(-s*1.1,s*1.3,0,s*1.7,0,s*2);ctx.bezierCurveTo(0,s*1.7,s*1.1,s*1.3,s*1.1,s*.7);ctx.bezierCurveTo(s*1.1,s*.1,s*.5,-s*.3,0,s*.3);ctx.fill();ctx.restore();}
+function bowCV(ctx,cx,cy,s){ctx.globalAlpha=.35;ctx.fillStyle='rgba(255,255,255,.7)';ctx.beginPath();ctx.moveTo(cx,cy);ctx.bezierCurveTo(cx-s*.4,cy-s*.5,cx-s,cy-s*.4,cx-s*.9,cy);ctx.bezierCurveTo(cx-s,cy+s*.4,cx-s*.4,cy+s*.5,cx,cy);ctx.fill();ctx.beginPath();ctx.moveTo(cx,cy);ctx.bezierCurveTo(cx+s*.4,cy-s*.5,cx+s,cy-s*.4,cx+s*.9,cy);ctx.bezierCurveTo(cx+s,cy+s*.4,cx+s*.4,cy+s*.5,cx,cy);ctx.fill();ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.ellipse(cx,cy,s*.2,s*.15,0,0,6.28);ctx.fill();}
+function initCV(){
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('canvas[data-col]').forEach(cv=>{
+      try{const cols=JSON.parse(cv.dataset.col),ini=cv.dataset.ini||'K',big=cv.dataset.big,land=cv.dataset.land;
+        drawCV(cv,cols,ini,big?600:land?600:300,big?800:land?240:400);}
+      catch(e){}
+    });
+  });
+}
+
+function imgFallback(img){
+  if(img.src.includes('maxresdefault')){img.src=img.src.replace('maxresdefault','hqdefault');}
+  else{img.style.display='none';}
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function bow(s){s=s||18;return`<svg width="${s}" height="${Math.round(s*.72)}" viewBox="0 0 30 22" fill="none" style="flex-shrink:0;vertical-align:middle;"><path d="M15 11 C13 7 6 4 3 11 C6 18 13 15 15 11Z" fill="#FFB3D4"/><path d="M15 11 C17 7 24 4 27 11 C24 18 17 15 15 11Z" fill="#FF8FBF"/><ellipse cx="15" cy="11" rx="3.2" ry="2.3" fill="#FF5FA0"/></svg>`;}
+
+function stars(r,cnt){
+  let s='';for(let i=1;i<=5;i++)s+=i<=Math.round(r)?'★':'☆';
+  const cntStr=cnt?(cnt>=1000?(cnt/1000).toFixed(1)+'k':cnt)+'件':'';
+  return`<span class="stars-val">${s}</span><span class="stars-num"> ${r.toFixed(1)}</span>`+(cntStr?`<span class="stars-cnt"> (${cntStr})</span>`:'');
+}
+
+function shopRow(x,showBrand){
+  const br=showBrand&&x.brand?`${x.cat} · ${x.brand}`:x.cat;
+  return`<a class="shop-row" href="${x.shopUrl}" target="_blank" rel="noopener">
+    <div style="min-width:0;">
+      <div class="item-cat">${br}</div>
+      <div class="item-nm">${x.name}</div>
+      ${x.rating?`<div class="item-stars">${stars(x.rating)}</div>`:''}
+    </div>
+    <div class="item-right">
+      <div class="item-pr">${x.price}</div>
+      <div class="shop-arr">購入 →</div>
+    </div>
+  </a>`;
+}
+
+// ── CARD TEMPLATES ────────────────────────────────────────────────────────
+function fashCard(item,sv){
+  const c=JSON.stringify(item.colors),v=viewedItems.has(item.id)&&sv;
+  return`<div class="icard" onclick="openF('${item.id}')" ontouchstart="startPress('${item.id}',event)" ontouchend="endPress()" ontouchmove="endPress()" oncontextmenu="return false;">
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.idol}">`:''}
+    <div class="photo-ov"></div>
+    <button class="like-btn${savedItems.has(item.id)?' liked':''}" data-id="${item.id}" onclick="toggleSave('${item.id}',event)">${savedItems.has(item.id)?'♥':'♡'}</button>
+    ${v?'<div class="viewed-dot"></div>':''}
+    <div class="photo-cap"><div class="photo-idol">${item.idol}</div><div class="photo-grp">${item.group}</div></div></div>
+    <div class="icard-body"><div class="style-chip">${item.styleTag}</div><div class="icard-brand">${item.items[0].name}</div><div class="icard-price">${item.items[0].price}</div>
+    <div class="icard-stars">${stars(item.rating,item.reviewCount)}</div></div>
+  </div>`;
+}
+function mkCard(item,sv){
+  const c=JSON.stringify(item.colors),v=viewedItems.has(item.id)&&sv;
+  return`<div class="icard" onclick="openM('${item.id}')" ontouchstart="startPress('${item.id}',event)" ontouchend="endPress()" ontouchmove="endPress()" oncontextmenu="return false;">
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.idol}">`:''}
+    <div class="photo-ov"></div>
+    <button class="like-btn${savedItems.has(item.id)?' liked':''}" data-id="${item.id}" onclick="toggleSave('${item.id}',event)">${savedItems.has(item.id)?'♥':'♡'}</button>
+    ${v?'<div class="viewed-dot"></div>':''}
+    <div class="photo-cap"><div class="photo-idol">${item.idol}</div><div class="photo-grp">${item.group}</div></div></div>
+    <div class="icard-body"><div class="style-chip">${item.lookName}</div><div class="icard-brand">${item.items[0].name}</div><div class="icard-price">${item.items[0].price}</div>
+    <div class="icard-stars">${stars(item.rating,item.reviewCount)}</div></div>
+  </div>`;
+}
+function hairCard(item){
+  const c=JSON.stringify(item.colors);
+  return`<div class="icard" onclick="openH('${item.id}')">
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.style[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.style}">`:''}
+    <div class="photo-ov"></div>
+    <div class="photo-cap"><div class="photo-idol">${item.style}</div><div class="photo-grp">${item.styleKo}</div></div></div>
+    <div class="icard-body"><div class="hair-diff">${item.difficulty}</div><div class="icard-brand">${item.idol} · ${item.group}</div><div class="icard-price">${item.tags.slice(0,2).join(' · ')}</div></div>
+  </div>`;
+}
+function muRow(m){
+  const c=JSON.stringify(m.colors);
+  const chg=m.rankChg==='NEW'?`<span class="rank-new">NEW</span>`
+    :m.rankChg>0?`<span class="rank-up">▲${m.rankChg}</span>`
+    :m.rankChg<0?`<span class="rank-dn">▼${Math.abs(m.rankChg)}</span>`
+    :`<span class="rank-same">—</span>`;
+  return`<div class="music-row" onclick="openSong('${m.id}')">
+    <div class="music-rank-col"><div class="music-rank">${m.rank}</div>${chg}</div>
+    <div class="music-thumb"><canvas data-col='${c}' data-ini="${m.artist[0]}"></canvas>${m.ytid?`<img src="https://img.youtube.com/vi/${m.ytid}/maxresdefault.jpg" onerror="imgFallback(this)" loading="lazy">`:''}
+    </div>
+    <div class="music-info">
+      <div class="music-title">${m.title}</div>
+      <div class="music-art clickable-art-sm" onclick="openArtist('${m.artist.replace(/'/g,"\\'")}',event)">${m.artist} ›</div>
+      <div class="music-meta"><span class="music-countries">${m.countries.join('')}</span><span class="music-member">✦ ${m.topMember}</span></div>
+    </div>
+    <a class="sp-link" href="${m.spotifyUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 17.3a.75.75 0 01-1.03.24c-2.82-1.72-6.37-2.11-10.55-1.16a.75.75 0 01-.33-1.46c4.58-1.05 8.5-.6 11.67 1.34.36.22.47.68.24 1.04zm1.48-3.3a.94.94 0 01-1.3.3c-3.22-1.98-8.14-2.55-11.96-1.4a.94.94 0 01-.53-1.8c4.36-1.33 9.78-.69 13.49 1.6.44.27.58.85.3 1.3zm.13-3.43C15.47 8.4 9.4 8.18 5.4 9.37a1.12 1.12 0 01-.65-2.15c4.58-1.39 12.2-1.12 17.02 1.6a1.12 1.12 0 01-1.1 1.95z"/></svg>聴く
+    </a>
+  </div>`;
+}
+function trendCard(t){
+  const c=JSON.stringify(t.thumbBg);
+  return`<div class="trend-card" onclick="switchTab('trends')">
+    <div class="trend-visual">
+      <canvas data-col='${c}' data-ini="${t.rank}" data-land="1"></canvas>
+      <div class="trend-visual-ov"></div>
+      <div class="trend-rank-badge">#${t.rank}</div>
+      <div class="trend-icon-big">${t.icon}</div>
+      <div class="trend-ko-ov">${t.nameKo.split('（')[0]}</div>
+    </div>
+    <div class="trend-body">
+      <div class="trend-name">${t.name}</div>
+      <div class="trend-ko">${t.nameKo}</div>
+      <div class="trend-desc">${t.desc}</div>
+      <div class="tag-row">${t.tags.map(g=>`<span class="tag">${g}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+function newsCard(n){
+  const c=JSON.stringify(n.colors);
+  return`<div class="news-card">
+    <div class="news-thumb"><canvas data-col='${c}' data-ini="${n.emoji}"></canvas><div class="news-thumb-ov"></div><span class="news-cat">${n.cat}</span></div>
+    <div class="news-body">
+      <div class="news-headline">${n.headline}</div>
+      <div class="news-meta">${n.group?`<span class="news-grp">${n.group}</span>`:''}<span class="news-date">${n.date}</span></div>
+      <div class="news-desc">${n.desc}</div>
+      <div class="news-tags">${n.tags.map(t=>`<span class="news-tag">${t}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────
+function renderHome(){
+  const all=[...FASHION.map(x=>({...x,kd:'f'})),...MAKEUP.map(x=>({...x,kd:'m'}))];
+  const hv=Object.keys(viewedTags).length>0;
+  const recs=hv?[...all].sort((a,b)=>sc(b)-sc(a)).slice(0,6):all.slice(0,6);
+  const tMinis=TRENDS.slice(0,5).map(t=>`<div class="tmini" onclick="switchTab('trends')"><div class="tmini-thumb" style="background:linear-gradient(135deg,${t.thumbBg[0]},${t.thumbBg[1]})">${t.icon}</div><div class="tmini-body"><div class="tmini-name">${t.name}</div><div class="tmini-ko">${t.nameKo.split('（')[0]}</div></div></div>`).join('');
+  const recCards=recs.map(x=>x.kd==='f'?fashCard(x,true):mkCard(x,true)).join('');
+  const top3=MUSIC.slice(0,3).map(m=>`<div style="padding:0 16px 8px;">${muRow(m)}</div>`).join('');
+  document.getElementById('panel-home').innerHTML=`
+    <div class="hero"><div class="hero-sparkle">🌸</div>
+      <div class="hero-badge">${bow(14)} 2024 韓国トレンド</div>
+      <div class="hero-title">アイドルのスタイルで<br>おしゃれになろう</div>
+      <div class="hero-desc">K-POPアイドルのコーデ・メイク・音楽を<br>まとめてチェック♡</div>
+      <div class="hero-dots"><div class="hero-dot" style="background:#FF5FA0"></div><div class="hero-dot" style="background:#FFB870"></div><div class="hero-dot" style="background:#5BC8FF"></div><div class="hero-dot" style="background:#C0AAFF"></div></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">今のトレンド</span></div><button class="sec-more" onclick="switchTab('trends')">もっと見る</button></div>
+    <div class="h-scroll">${tMinis}</div>
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">${hv?'あなたへのおすすめ':'人気のコーデ＆メイク'}</span></div><button class="sec-more" onclick="switchTab('fashion')">もっと見る</button></div>
+    <div class="cards-grid">${recCards}</div>
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">週間チャート</span></div><button class="sec-more" onclick="switchTab('music')">もっと見る</button></div>
+    ${top3}
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">最新ニュース</span></div><button class="sec-more" onclick="switchTab('news')">もっと見る</button></div>
+    <div style="display:flex;flex-direction:column;gap:10px;padding:0 16px;">${NEWS.slice(0,2).map(newsCard).join('')}</div>
+    <div class="spacer"></div>`;
+  initCV();
+}
+
+const FC=['すべて','ストリート','フェミニン','Y2K','カジュアル','エレガント'];
+function renderFashion(){
+  const list=fashionFilter==='すべて'?FASHION:FASHION.filter(x=>x.tags.some(t=>t.includes(fashionFilter)||fashionFilter.includes(t)));
+  document.getElementById('panel-fashion').innerHTML=`
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">ファッション</span></div></div>
+    <div class="chip-row">${FC.map(f=>`<button class="chip${fashionFilter===f?' active':''}" onclick="setFF('${f}')">${f}</button>`).join('')}</div>
+    <div class="cards-grid">${list.map(x=>fashCard(x,true)).join('')}</div>
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">韓国ヘアアレンジ</span></div></div>
+    <div class="cards-grid">${HAIR.map(hairCard).join('')}</div>
+    <div class="spacer"></div>`;
+  initCV();
+}
+function setFF(f){fashionFilter=f;renderFashion();}
+
+const MC=['すべて','ナチュラル','スモーキー','Y2K','かわいい','グリッター'];
+function renderMakeup(){
+  const list=makeupFilter==='すべて'?MAKEUP:MAKEUP.filter(x=>x.tags.some(t=>t.includes(makeupFilter)||makeupFilter.includes(t)));
+  document.getElementById('panel-makeup').innerHTML=`
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">メイク＆コスメ</span></div></div>
+    <div class="chip-row">${MC.map(f=>`<button class="chip${makeupFilter===f?' active':''}" onclick="setMF('${f}')">${f}</button>`).join('')}</div>
+    <div class="cards-grid">${list.map(x=>mkCard(x,true)).join('')}</div><div class="spacer"></div>`;
+  initCV();
+}
+function setMF(f){makeupFilter=f;renderMakeup();}
+
+function renderMusic(){
+  document.getElementById('panel-music').innerHTML=`
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">週間チャート</span></div></div>
+    <div style="padding:0 16px 8px;font-size:11px;color:var(--t3);">▲▼は先週比 · 国旗は人気の国 · ✦は再生数No.1メンバー</div>
+    <div class="music-list">${MUSIC.map(muRow).join('')}</div><div class="spacer"></div>`;
+  initCV();
+}
+
+let _liveNews=false;
+function renderNews(){
+  const liveTag=_liveNews?'<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#FF5FA0;background:var(--acc-s);padding:2px 8px;border-radius:10px;margin-left:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#FF5FA0;animation:pulse 1.4s infinite;display:inline-block;"></span>LIVE</span>':'';
+  document.getElementById('panel-news').innerHTML=`
+    <div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">K-POP ニュース</span>${liveTag}</div></div>
+    <div class="news-list">${NEWS.map(newsCard).join('')}</div><div class="spacer"></div>`;
+  initCV();
+}
+
+function renderSaved(){
+  const fSaved=FASHION.filter(x=>savedItems.has(x.id));
+  const mSaved=MAKEUP.filter(x=>savedItems.has(x.id));
+  if(!fSaved.length&&!mSaved.length){
+    document.getElementById('panel-saved').innerHTML=`
+      <div class="save-empty"><div class="save-empty-ico">🌸</div>
+        <div class="save-empty-ttl">コレクションはまだ空です</div>
+        <div class="save-empty-txt">気に入ったコーデやメイクの<br>♡ボタンを押して保存しよう！<br><br>長押しでも保存できます</div>
+      </div>`;
+    return;
+  }
+  let html='<div class="save-panel">';
+  if(fSaved.length)html+=`<div class="save-section-ttl">${bow(16)} ファッション</div><div class="cards-grid">${fSaved.map(x=>fashCard(x,false)).join('')}</div><div style="height:16px;"></div>`;
+  if(mSaved.length)html+=`<div class="save-section-ttl">${bow(16)} メイク</div><div class="cards-grid">${mSaved.map(x=>mkCard(x,false)).join('')}</div>`;
+  html+='</div>';
+  document.getElementById('panel-saved').innerHTML=html;
+  initCV();
+}
+
+function renderTrends(){
+  document.getElementById('panel-trends').innerHTML=`<div class="sec-hdr"><div class="sec-tw">${bow(16)}<span class="sec-ttl">韓国トレンド</span></div></div><div class="trend-list">${TRENDS.map(trendCard).join('')}</div><div class="spacer"></div>`;
+  initCV();
+}
+
+// ── MODALS ───────────────────────────────────────────────────────────────
+function openF(id){
+  const item=FASHION.find(x=>x.id===id);if(!item)return;
+  recordView(item);
+  const c=JSON.stringify(item.colors);
+  const irows=item.items.map(x=>shopRow(x,false)).join('');
+  const recs=topRecs(id,FASHION,4);
+  const sim=recs.length?`<div class="cards-grid">${recs.map(x=>fashCard(x,false)).join('')}</div>`:`<div class="rec-empty"><div class="rec-empty-ico">🌸</div><div class="rec-empty-txt">もっとコーデを見ると<br>おすすめが表示されます</div></div>`;
+  document.getElementById('modal-ttl').textContent=`${item.idol} / ${item.group}`;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}" data-big="1"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" alt="${item.idol}">`:''}
+    <div class="photo-ov"></div></div>
+    <div class="modal-body">
+      <div class="modal-idol">${item.idol}</div><div class="modal-grp">${item.group}</div>
+      <div class="modal-chip">${item.styleTag}</div>
+      <div class="modal-rating">${stars(item.rating,item.reviewCount)}</div>
+      <div class="items-lbl">コーデアイテム <span style="font-size:10px;color:var(--acc);font-weight:600;">タップで購入ページへ</span></div>
+      <div class="item-rows">${irows}</div>
+      <div class="similar-ttl">${bow(16)} 似たコーデ</div>${sim}
+    </div>`;
+  openModal();renderHome();
+}
+
+function openM(id){
+  const item=MAKEUP.find(x=>x.id===id);if(!item)return;
+  recordView(item);
+  const c=JSON.stringify(item.colors);
+  const stepCards=item.steps.map(s=>`<div class="step-card"><div class="step-num">${s.n}</div><div><div class="step-title">${s.t}</div><div class="step-tip">${s.tip}</div><div class="step-point">✦ ${s.pt}</div></div></div>`).join('');
+  const cosmeRows=item.items.map(x=>shopRow(x,true)).join('');
+  const toolRows=item.tools.map(x=>shopRow(x,false)).join('');
+  const careRows=item.care.map(x=>shopRow(x,true)).join('');
+  const recs=topRecs(id,MAKEUP,4);
+  const sim=recs.length?`<div class="cards-grid">${recs.map(x=>mkCard(x,false)).join('')}</div>`:`<div class="rec-empty"><div class="rec-empty-ico">💄</div><div class="rec-empty-txt">もっとメイクを見ると<br>おすすめが表示されます</div></div>`;
+  document.getElementById('modal-ttl').textContent=`${item.lookName} / ${item.idol}`;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}" data-big="1"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" alt="${item.idol}">`:''}
+    <div class="photo-ov"></div></div>
+    <div class="modal-body">
+      <div class="modal-idol">${item.idol}</div><div class="modal-grp">${item.group}</div>
+      <div class="modal-chip">${item.lookName}</div>
+      <div class="modal-rating">${stars(item.rating,item.reviewCount)}</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:20px;">${item.lookDesc}</div>
+      <div class="items-lbl">${bow(14)} ステップ別メイク解説</div>
+      <div class="steps-section">${stepCards}</div>
+      <div class="items-lbl">使ってるコスメ <span style="font-size:10px;color:var(--acc);font-weight:600;">タップで購入ページへ</span></div>
+      <div class="item-rows">${cosmeRows}</div>
+      <div class="items-lbl">おすすめ化粧道具 <span style="font-size:10px;color:var(--acc2);font-weight:600;">タップで購入ページへ</span></div>
+      <div class="item-rows">${toolRows}</div>
+      <div class="items-lbl">おすすめケア用品 <span style="font-size:10px;color:var(--mint);font-weight:600;">タップで購入ページへ</span></div>
+      <div class="item-rows">${careRows}</div>
+      <div class="similar-ttl">${bow(16)} 似たメイク</div>${sim}
+    </div>`;
+  openModal();renderHome();
+}
+
+function openH(id){
+  const item=HAIR.find(x=>x.id===id);if(!item)return;
+  const c=JSON.stringify(item.colors);
+  const toolChips=item.tools.map(t=>`<span class="tool-chip">🪄 ${t}</span>`).join('');
+  document.getElementById('modal-ttl').textContent=`${item.style} · ${item.styleKo}`;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-photo"><canvas data-col='${c}' data-ini="${item.style[0]}" data-big="1"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" alt="${item.style}">`:''}
+    <div class="photo-ov"></div></div>
+    <div class="modal-body">
+      <div class="modal-idol">${item.style}</div>
+      <div class="modal-grp">${item.styleKo}</div>
+      <div class="modal-chip2">${item.difficulty}</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:20px;">${item.desc}</div>
+      <div class="items-lbl">ポイント ✦</div>
+      <div class="hair-tip-box"><div class="hair-tip-txt">${item.tip}</div></div>
+      <div class="items-lbl">必要なアイテム</div>
+      <div class="modal-tools-wrap">${toolChips}</div>
+      <div style="font-size:12px;color:var(--t3);text-align:center;padding:12px 0;">このスタイルは <strong style="color:var(--acc)">${item.idol} (${item.group})</strong> が着用</div>
+    </div>`;
+  openModal();
+}
+
+function openSong(id){
+  const m=MUSIC.find(x=>x.id===id);if(!m)return;
+  const c=JSON.stringify(m.colors);
+  const similar=MUSIC.filter(x=>x.id!==id&&(x.artist===m.artist||x.tags.some(t=>m.tags.includes(t)))).slice(0,4);
+  const simRows=similar.length?`<div class="similar-ttl">${bow(16)} 似た曲</div><div class="music-list" style="padding:0;">${similar.map(muRow).join('')}</div>`:'';
+  const spSvg=`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 17.3a.75.75 0 01-1.03.24c-2.82-1.72-6.37-2.11-10.55-1.16a.75.75 0 01-.33-1.46c4.58-1.05 8.5-.6 11.67 1.34.36.22.47.68.24 1.04zm1.48-3.3a.94.94 0 01-1.3.3c-3.22-1.98-8.14-2.55-11.96-1.4a.94.94 0 01-.53-1.8c4.36-1.33 9.78-.69 13.49 1.6.44.27.58.85.3 1.3zm.13-3.43C15.47 8.4 9.4 8.18 5.4 9.37a1.12 1.12 0 01-.65-2.15c4.58-1.39 12.2-1.12 17.02 1.6a1.12 1.12 0 01-1.1 1.95z"/></svg>`;
+  document.getElementById('modal-ttl').textContent=`${m.title} / ${m.artist}`;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-photo"><canvas data-col='${c}' data-ini="${m.title[0]}" data-big="1"></canvas>${m.ytid?`<img src="https://img.youtube.com/vi/${m.ytid}/maxresdefault.jpg" onerror="imgFallback(this)" alt="${m.title}">`:''}
+    <div class="photo-ov"></div></div>
+    <div class="modal-body">
+      <div class="modal-idol">${m.title}</div>
+      <div class="clickable-art" onclick="openArtist('${m.artist.replace(/'/g,"\\'")}',event)">${m.artist} →</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px;">${m.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="song-meta-bar">
+        <div class="song-meta-item"><div class="song-meta-lbl">リリース</div><div class="song-meta-val">${m.releaseDate}</div></div>
+        <div class="song-meta-item"><div class="song-meta-lbl">アルバム</div><div class="song-meta-val">${m.album}</div></div>
+        <div class="song-meta-item"><div class="song-meta-lbl">再生回数</div><div class="song-meta-val">${m.plays}</div></div>
+      </div>
+      <a class="sp-btn-big" href="${m.spotifyUrl}" target="_blank" rel="noopener">${spSvg} Spotifyで聴く</a>
+      ${simRows}
+    </div>`;
+  openModal();
+}
+
+function openArtist(name,e){
+  e&&e.stopPropagation();
+  const a=ARTISTS[name];if(!a)return;
+  const songs=MUSIC.filter(m=>m.artist===name);
+  const c=JSON.stringify(a.colors);
+  const genreChips=a.genre.map(g=>`<span class="tag">${g}</span>`).join('');
+  const songRows=songs.length?`<div class="similar-ttl">${bow(16)} チャートの曲</div><div class="music-list" style="padding:0;">${songs.map(muRow).join('')}</div>`:'';
+  document.getElementById('modal-ttl').textContent=name;
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-photo"><canvas data-col='${c}' data-ini="${name[0]}" data-big="1"></canvas>${a.photoUrl?`<img src="${a.photoUrl}" onerror="imgFallback(this)" alt="${name}">`:''}
+    <div class="photo-ov"></div></div>
+    <div class="modal-body">
+      <div class="modal-idol">${name}</div>
+      <div class="artist-rank-badge">🌍 世界${a.worldRank}位のアーティスト</div>
+      <div class="artist-stats">
+        <div class="artist-stat"><div class="artist-stat-val">${a.monthlyListeners}</div><div class="artist-stat-lbl">月間リスナー</div></div>
+        <div class="artist-stat" style="border-left:1px solid var(--bord);border-right:1px solid var(--bord);"><div class="artist-stat-val">${a.followers}</div><div class="artist-stat-lbl">フォロワー</div></div>
+        <div class="artist-stat"><div class="artist-stat-val">${a.debut.slice(0,4)}年</div><div class="artist-stat-lbl">デビュー</div></div>
+      </div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:14px;">${a.bio}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:22px;">${genreChips}</div>
+      ${songRows}
+    </div>`;
+  openModal();
+}
+
+function openModal(){document.getElementById('detail-modal').classList.add('open');document.body.style.overflow='hidden';setTimeout(initCV,50);}
+function closeModal(){document.getElementById('detail-modal').classList.remove('open');document.body.style.overflow='';}
+
+// ── SEARCH ────────────────────────────────────────────────────────────────
+function toggleSearch(){searchOpen=!searchOpen;document.getElementById('search-panel').classList.toggle('open',searchOpen);if(searchOpen)setTimeout(()=>document.getElementById('search-input').focus(),200);}
+function closeSearch(){searchOpen=false;document.getElementById('search-panel').classList.remove('open');document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML=`<div class="s-empty"><div class="s-empty-ico">🔍</div><div>アイドル名・グループ名・ブランド名・曲名で検索</div></div>`;}
+function doSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){document.getElementById('search-results').innerHTML=`<div class="s-empty"><div class="s-empty-ico">🔍</div><div>アイドル名・グループ名・ブランド名・曲名で検索</div></div>`;return;}
+  const fR=FASHION.filter(x=>x.idol.toLowerCase().includes(q)||x.group.toLowerCase().includes(q)||x.styleTag.toLowerCase().includes(q)||x.tags.some(t=>t.toLowerCase().includes(q))||x.items.some(i=>i.name.toLowerCase().includes(q)));
+  const mR=MAKEUP.filter(x=>x.idol.toLowerCase().includes(q)||x.group.toLowerCase().includes(q)||x.lookName.toLowerCase().includes(q)||x.tags.some(t=>t.toLowerCase().includes(q))||x.items.some(i=>i.name.toLowerCase().includes(q)));
+  const hR=HAIR.filter(x=>x.style.toLowerCase().includes(q)||x.idol.toLowerCase().includes(q)||x.group.toLowerCase().includes(q)||x.tags.some(t=>t.toLowerCase().includes(q)));
+  const muR=MUSIC.filter(x=>x.title.toLowerCase().includes(q)||x.artist.toLowerCase().includes(q));
+  const nR=NEWS.filter(x=>x.headline.toLowerCase().includes(q)||x.group.toLowerCase().includes(q)||x.tags.some(t=>t.toLowerCase().includes(q)));
+  if(!fR.length&&!mR.length&&!hR.length&&!muR.length&&!nR.length){document.getElementById('search-results').innerHTML=`<div class="s-empty"><div class="s-empty-ico">🌸</div><div>「${q}」の検索結果はありませんでした</div></div>`;return;}
+  let html='';
+  if(fR.length)html+=`<div class="sec-hdr"><div class="sec-tw">${bow(14)}<span class="sec-ttl" style="font-size:15px">ファッション</span></div></div><div class="cards-grid">${fR.map(x=>fashCard(x,false)).join('')}</div>`;
+  if(mR.length)html+=`<div class="sec-hdr"><div class="sec-tw">${bow(14)}<span class="sec-ttl" style="font-size:15px">メイク</span></div></div><div class="cards-grid">${mR.map(x=>mkCard(x,false)).join('')}</div>`;
+  if(hR.length)html+=`<div class="sec-hdr"><div class="sec-tw">${bow(14)}<span class="sec-ttl" style="font-size:15px">ヘアスタイル</span></div></div><div class="cards-grid">${hR.map(hairCard).join('')}</div>`;
+  if(muR.length)html+=`<div class="sec-hdr"><div class="sec-tw">${bow(14)}<span class="sec-ttl" style="font-size:15px">音楽</span></div></div><div class="music-list" style="padding:0 16px;">${muR.map(muRow).join('')}</div>`;
+  if(nR.length)html+=`<div class="sec-hdr"><div class="sec-tw">${bow(14)}<span class="sec-ttl" style="font-size:15px">ニュース</span></div></div><div style="display:flex;flex-direction:column;gap:10px;padding:0 16px;">${nR.map(newsCard).join('')}</div>`;
+  document.getElementById('search-results').innerHTML=html;initCV();
+}
+
+// ── NAV ──────────────────────────────────────────────────────────────────
+const TABS={home:renderHome,fashion:renderFashion,makeup:renderMakeup,music:renderMusic,news:renderNews,saved:renderSaved,trends:renderTrends};
+function switchTab(tab){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  TABS[tab]();
+  document.getElementById('tab-content').scrollTop=0;
+}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+
+// ── THEME ─────────────────────────────────────────────────────────────────
+function toggleTheme(){const r=document.documentElement,cur=r.getAttribute('data-theme');const dk=!cur?window.matchMedia('(prefers-color-scheme:dark)').matches:cur==='dark';r.setAttribute('data-theme',dk?'light':'dark');try{localStorage.setItem('kb_theme',r.getAttribute('data-theme'));}catch(e){}}
+(function(){try{const t=localStorage.getItem('kb_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+
+renderHome();
+
+// ── LIVE NEWS ────────────────────────────────────────────────────────────────
+(async function fetchLiveNews(){
+  const KPOP_GROUPS=['BLACKPINK','aespa','NewJeans','IVE','LE SSERAFIM','TWICE','ILLIT','BABYMONSTER','(G)I-DLE','ITZY','STRAY KIDS','BTS','EXO','NCT','SEVENTEEN','ATEEZ','TXT','ENHYPEN','BIGBANG','MAMAMOO','WINNER','ZICO','JENNIE','LISA','JISOO','ROSÉ','KARINA','NINGNING','WINTER','GISELLE'];
+  const PALETTES=[['#FFD880','#FF9860'],['#FFD4A0','#FFB0CC'],['#D8C8FF','#C0E4FF'],['#A8D8FF','#B8F8E0'],['#FFA8A8','#A8A8FF'],['#FFB8D0','#FFD8A0'],['#C8C0FF','#A8E8C0'],['#A8D8FF','#C8F8E8']];
+  function stripHtml(s){return(s||'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').replace(/&#39;/g,"'").replace(/&quot;/g,'"').trim();}
+  function findGroup(t){for(const g of KPOP_GROUPS)if(t.includes(g))return g;return'';}
+  function catFromTitle(t){const tl=t.toLowerCase();if(tl.includes('concert')||tl.includes('tour'))return 'コンサート';if(tl.includes('album')||tl.includes('release')||tl.includes('comeback'))return 'リリース';if(tl.includes('chart')||tl.includes('record')||tl.includes('million'))return '記録';if(tl.includes('fashion')||tl.includes('brand')||tl.includes('ambassador'))return 'ファッション';return 'ニュース';}
+  try{
+    const r=await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fsoompi.com%2Fcategory%2Fnews%2Ffeed%2F&count=8');
+    const d=await r.json();
+    if(d.status==='ok'&&d.items?.length>=2){
+      const live=d.items.map((item,i)=>{
+        const grp=findGroup(item.title);
+        const desc=stripHtml(item.description||item.content||'');
+        return{id:'ln'+i,emoji:'📰',cat:catFromTitle(item.title),group:grp,headline:item.title,date:(item.pubDate||'').slice(0,10).replace(/-/g,'.'),desc:desc.slice(0,160)+(desc.length>160?'…':''),tags:grp?[grp,'Soompi']:['K-POP','Soompi'],colors:PALETTES[i%PALETTES.length]};
+      });
+      NEWS.splice(0,NEWS.length,...live);
+      _liveNews=true;
+      if(document.getElementById('panel-news').classList.contains('active'))renderNews();
+    }
+  }catch(e){}
+})();
+
+// アプリアイコン生成
+(function(){
+  try{
+    var cv=document.createElement('canvas');cv.width=cv.height=180;
+    var ctx=cv.getContext('2d');
+    var g=ctx.createLinearGradient(0,0,180,180);
+    g.addColorStop(0,'#FFB3D4');g.addColorStop(1,'#FF5FA0');
+    ctx.fillStyle=g;ctx.fillRect(0,0,180,180);
+    ctx.fillStyle='rgba(255,255,255,.35)';
+    [[28,38,8],[152,48,6],[158,138,5],[22,138,7],[90,26,5]].forEach(function(p){
+      var x=p[0],y=p[1],r=p[2];
+      ctx.beginPath();
+      for(var i=0;i<10;i++){var ri=i%2?r*.42:r,a=i*Math.PI/5-Math.PI/2;
+        i?ctx.lineTo(x+Math.cos(a)*ri,y+Math.sin(a)*ri):ctx.moveTo(x+Math.cos(a)*ri,y+Math.sin(a)*ri);}
+      ctx.closePath();ctx.fill();
+    });
+    ctx.fillStyle='rgba(255,255,255,.32)';
+    ctx.beginPath();ctx.moveTo(90,65);ctx.bezierCurveTo(78,45,43,39,39,65);ctx.bezierCurveTo(43,91,78,85,90,65);ctx.fill();
+    ctx.beginPath();ctx.moveTo(90,65);ctx.bezierCurveTo(102,45,137,39,141,65);ctx.bezierCurveTo(137,91,102,85,90,65);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.ellipse(90,65,11,8,0,0,6.28);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.95)';ctx.font='bold italic 36px Georgia,serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('K·Bloom',90,122);
+    var lk=document.createElement('link');lk.rel='apple-touch-icon';lk.href=cv.toDataURL('image/png');
+    document.head.appendChild(lk);
+  }catch(e){}
+})();
+</script>

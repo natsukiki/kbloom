@@ -1,0 +1,29 @@
+name: Update K-pop News
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日9時JST（UTC 0時）
+  workflow_dispatch:       # 手動でも実行可能
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install feedparser requests
+
+      - name: Fetch and update news
+        run: python scripts/update_news.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet && echo "no changes" || (git add index.html && git commit -m "chore: update K-pop news $(date +'%Y-%m-%d')" && git push)
