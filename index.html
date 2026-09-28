@@ -88,6 +88,7 @@ button{font-family:inherit;cursor:pointer;}a{color:inherit;text-decoration:none;
 .like-btn:active{transform:scale(.8);}
 .like-btn.liked{background:var(--acc);color:#fff;}
 .viewed-dot{position:absolute;top:8px;left:8px;z-index:2;width:8px;height:8px;background:var(--lav);border-radius:50%;border:2px solid var(--bg-card);}
+.ig-btn{position:absolute;bottom:44px;right:8px;z-index:3;display:flex;align-items:center;gap:3px;background:rgba(255,255,255,.92);color:#1a1a1a;font-size:9px;font-weight:700;padding:3px 7px;border-radius:10px;text-decoration:none;backdrop-filter:blur(4px);white-space:nowrap;}
 .icard-body{padding:9px 11px 11px;}
 .style-chip{display:inline-block;background:var(--acc-s);color:var(--acc);font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-bottom:5px;}
 .hair-diff{display:inline-block;background:var(--acc2s);color:var(--acc2);font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-bottom:5px;}
@@ -269,46 +270,47 @@ button{font-family:inherit;cursor:pointer;}a{color:inherit;text-decoration:none;
 
 <script>
 const FASHION=[
-  {id:'f1',idol:'Haerin',group:'NewJeans',styleTag:'ストリートカジュアル',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',rating:4.6,reviewCount:342,colors:['#A8D8FF','#B8F8E0'],tags:['ストリート','カジュアル','レイヤード','ニュートラル'],items:[
-    {cat:'アウター',name:'Moncler ダウンベスト',price:'¥85,000',rating:4.5,shopUrl:'https://www.moncler.com/ja-jp/'},
-    {cat:'トップス',name:'ACNE STUDIOS ロゴTシャツ',price:'¥18,500',rating:4.3,shopUrl:'https://www.acnestudios.com/jp/'},
-    {cat:'ボトムス',name:'Dickies ワイドカーゴパンツ',price:'¥5,980',rating:4.6,shopUrl:'https://www.dickies.jp/'},
-    {cat:'シューズ',name:'New Balance 530',price:'¥14,300',rating:4.7,shopUrl:'https://www.newbalance.co.jp/'}]},
-  {id:'f2',idol:'JENNIE',group:'BLACKPINK',styleTag:'Y2Kフェミニン',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',rating:4.8,reviewCount:892,colors:['#FFD4A0','#FFB0CC'],tags:['Y2K','フェミニン','ラグジュアリー','ミニスカ'],items:[
+  {id:'f1',idol:'Haerin',group:'NewJeans',styleTag:'ゆるニットコーデ',igAccount:'newjeans_official_',rating:4.6,reviewCount:342,colors:['#A8D8FF','#B8F8E0'],tags:['ニット','ゆるシルエット','カジュアル','淡色'],items:[
+    {cat:'トップス',name:'ゆるシルエット ニット',price:'¥4,900',rating:4.5,shopUrl:'https://zozo.jp/'},
+    {cat:'ボトムス',name:'タイトミニスカート',price:'¥3,900',rating:4.3,shopUrl:'https://zozo.jp/'},
+    {cat:'アクセ',name:'リボンヘアピン',price:'¥1,500',rating:4.6,shopUrl:'https://zozo.jp/'},
+    {cat:'シューズ',name:'メリージェーン フラット',price:'¥8,800',rating:4.7,shopUrl:'https://www.zara.com/jp/'}]},
+  {id:'f2',idol:'JENNIE',group:'BLACKPINK',styleTag:'Y2Kフェミニン',igAccount:'jennierubyjane',rating:4.8,reviewCount:892,colors:['#FFD4A0','#FFB0CC'],tags:['Y2K','フェミニン','ラグジュアリー','ミニスカ'],items:[
     {cat:'トップス',name:'CHANEL クロップトップ',price:'¥198,000',rating:4.9,shopUrl:'https://www.chanel.com/jp/'},
     {cat:'ボトムス',name:'Miu Miu ミニスカート',price:'¥120,000',rating:4.7,shopUrl:'https://www.miumiu.com/ja-jp/'},
     {cat:'バッグ',name:'CHANEL ミニマトラッセ',price:'¥420,000',rating:4.9,shopUrl:'https://www.chanel.com/jp/'},
     {cat:'シューズ',name:'Manolo Blahnik パンプス',price:'¥85,000',rating:4.6,shopUrl:'https://www.manoloblahnik.com/jp/'}]},
-  {id:'f3',idol:'KARINA',group:'aespa',styleTag:'フューチャリスティック',photoUrl:'https://img.youtube.com/vi/phuiiNCxRMg/maxresdefault.jpg',rating:4.7,reviewCount:528,colors:['#D8C8FF','#C0E4FF'],tags:['フューチャリスティック','テック','クール','モノトーン'],items:[
-    {cat:'セットアップ',name:'Balenciaga トラックスーツ',price:'¥245,000',rating:4.5,shopUrl:'https://www.balenciaga.com/ja-jp/'},
-    {cat:'シューズ',name:'Balenciaga Triple S',price:'¥112,000',rating:4.4,shopUrl:'https://www.balenciaga.com/ja-jp/'},
-    {cat:'アクセ',name:'Y2K チョーカー',price:'¥3,200',rating:4.2,shopUrl:'https://zozo.jp/'}]},
-  {id:'f4',idol:'Wonyoung',group:'IVE',styleTag:'クリーンガール',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',rating:4.8,reviewCount:712,colors:['#FFA8A8','#FFE8A8'],tags:['クリーンガール','フェミニン','エレガント','ワンピース'],items:[
+  {id:'f3',idol:'KARINA',group:'aespa',styleTag:'セーラームード',igAccount:'aespa_official',rating:4.7,reviewCount:528,colors:['#D8C8FF','#C0E4FF'],tags:['セーラー','制服風','清楚','ネイビー'],items:[
+    {cat:'トップス',name:'セーラーカラー ブラウス',price:'¥5,800',rating:4.5,shopUrl:'https://zozo.jp/'},
+    {cat:'ボトムス',name:'プリーツ ミニスカート',price:'¥4,500',rating:4.4,shopUrl:'https://zozo.jp/'},
+    {cat:'バッグ',name:'スクエアショルダーバッグ',price:'¥12,000',rating:4.2,shopUrl:'https://zozo.jp/'},
+    {cat:'シューズ',name:'ローファー',price:'¥9,800',rating:4.6,shopUrl:'https://zozo.jp/'}]},
+  {id:'f4',idol:'Wonyoung',group:'IVE',styleTag:'クリーンガール',igAccount:'official_ive',rating:4.8,reviewCount:712,colors:['#FFA8A8','#FFE8A8'],tags:['クリーンガール','フェミニン','エレガント','ワンピース'],items:[
     {cat:'ワンピース',name:'Zimmermann フローラルドレス',price:'¥68,000',rating:4.8,shopUrl:'https://www.zimmermannwear.com/'},
     {cat:'バッグ',name:'Bottega Veneta ポーチ',price:'¥156,000',rating:4.7,shopUrl:'https://www.bottegaveneta.com/ja-jp/'},
     {cat:'シューズ',name:'Roger Vivier メリージェーン',price:'¥92,000',rating:4.6,shopUrl:'https://www.rogervivier.com/ja-jp/'}]},
-  {id:'f5',idol:'Chaewon',group:'LE SSERAFIM',styleTag:'スポーティシック',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',rating:4.4,reviewCount:468,colors:['#FFD880','#FF9860'],tags:['スポーティ','ストリート','カジュアル','ロゴ'],items:[
+  {id:'f5',idol:'Chaewon',group:'LE SSERAFIM',styleTag:'スポーティシック',igAccount:'official_le_sserafim',rating:4.4,reviewCount:468,colors:['#FFD880','#FF9860'],tags:['スポーティ','ストリート','カジュアル','ロゴ'],items:[
     {cat:'ジャケット',name:'MLB ウィンドブレーカー',price:'¥12,800',rating:4.5,shopUrl:'https://mlb-korea.co.jp/'},
     {cat:'トップス',name:'Adidas クロップTシャツ',price:'¥5,500',rating:4.4,shopUrl:'https://www.adidas.co.jp/'},
     {cat:'ボトムス',name:'NIKE スウェットパンツ',price:'¥8,800',rating:4.3,shopUrl:'https://www.nike.com/jp/'},
     {cat:'シューズ',name:'New Balance 2002R',price:'¥17,600',rating:4.8,shopUrl:'https://www.newbalance.co.jp/'}]},
-  {id:'f6',idol:'Nayeon',group:'TWICE',styleTag:'ガーリーポップ',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFF0B8'],tags:['ガーリー','フェミニン','かわいい','パステル'],items:[
-    {cat:'トップス',name:'Coquette リボンブラウス',price:'¥8,900',rating:4.3,shopUrl:'https://zozo.jp/'},
-    {cat:'ボトムス',name:'フラウンス ミニスカート',price:'¥6,500',rating:4.2,shopUrl:'https://zozo.jp/'},
-    {cat:'バッグ',name:'COACH ポシェット',price:'¥28,000',rating:4.5,shopUrl:'https://www.coach.com/ja_JP/'}]},
-  {id:'f7',idol:'Minji',group:'NewJeans',styleTag:'クールカジュアル',photoUrl:'https://img.youtube.com/vi/11cta61wi0g/maxresdefault.jpg',rating:4.5,reviewCount:412,colors:['#B0A0FF','#C8D8FF'],tags:['クール','カジュアル','ストリート','デニム'],items:[
+  {id:'f6',idol:'Nayeon',group:'TWICE',styleTag:'コットンレース',igAccount:'twicetagram',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFF0B8'],tags:['レース','コットン','フェミニン','オフショル'],items:[
+    {cat:'トップス',name:'オフショルダー レースブラウス',price:'¥5,900',rating:4.3,shopUrl:'https://zozo.jp/'},
+    {cat:'ボトムス',name:'フラウンス ミニスカート',price:'¥4,500',rating:4.2,shopUrl:'https://zozo.jp/'},
+    {cat:'アクセ',name:'パールネックレス',price:'¥3,200',rating:4.5,shopUrl:'https://zozo.jp/'}]},
+  {id:'f7',idol:'Minji',group:'NewJeans',styleTag:'デニムカジュアル',igAccount:'newjeans_official_',rating:4.5,reviewCount:412,colors:['#B0A0FF','#C8D8FF'],tags:['クール','カジュアル','ストリート','デニム'],items:[
     {cat:'アウター',name:'Carhartt デニムジャケット',price:'¥22,000',rating:4.6,shopUrl:'https://www.carhartt.com/'},
-    {cat:'トップス',name:'KAWS コラボTシャツ',price:'¥9,800',rating:4.4,shopUrl:'https://kawsone.com/'},
+    {cat:'トップス',name:'ベーシック ロゴTシャツ',price:'¥5,800',rating:4.4,shopUrl:'https://zozo.jp/'},
     {cat:'ボトムス',name:'Dickies ベイカーパンツ',price:'¥5,980',rating:4.6,shopUrl:'https://www.dickies.jp/'},
     {cat:'シューズ',name:'Vans Old Skool',price:'¥8,800',rating:4.7,shopUrl:'https://www.vans.co.jp/'}]},
-  {id:'f8',idol:'Kazuha',group:'LE SSERAFIM',styleTag:'モードエレガント',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',rating:4.7,reviewCount:592,colors:['#80C8FF','#B0E8FF'],tags:['エレガント','モード','ラグジュアリー','ワンカラー'],items:[
+  {id:'f8',idol:'Kazuha',group:'LE SSERAFIM',styleTag:'モードエレガント',igAccount:'official_le_sserafim',rating:4.7,reviewCount:592,colors:['#80C8FF','#B0E8FF'],tags:['エレガント','モード','ラグジュアリー','ワンカラー'],items:[
     {cat:'ドレス',name:'Saint Laurent スリップドレス',price:'¥185,000',rating:4.6,shopUrl:'https://www.ysl.com/ja-jp/'},
     {cat:'バッグ',name:'CELINE トリオンフ',price:'¥270,000',rating:4.8,shopUrl:'https://www.celine.com/ja-jp/'},
     {cat:'シューズ',name:'Aquazzura サンダル',price:'¥78,000',rating:4.5,shopUrl:'https://www.aquazzura.com/'}]}
 ];
 
 const MAKEUP=[
-  {id:'m1',idol:'Haerin',group:'NewJeans',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',lookName:'グラスシン肌メイク',lookDesc:'ガラスのように透き通った韓国美肌。保湿を重ねて艶感を最大化するのがポイント。',rating:4.7,reviewCount:518,colors:['#A8D8FF','#C8F8E8'],tags:['ナチュラル','グラスシン','透明感','ミニマル'],
+  {id:'m1',idol:'Haerin',group:'NewJeans',igAccount:'newjeans_official_',lookName:'グラスシン肌メイク',lookDesc:'ガラスのように透き通った韓国美肌。保湿を重ねて艶感を最大化するのがポイント。',rating:4.7,reviewCount:518,colors:['#A8D8FF','#C8F8E8'],tags:['ナチュラル','グラスシン','透明感','ミニマル'],
    steps:[{n:1,t:'スキンケアprep',tip:'化粧水を手のひらで温めてから塗る。コットンNGで手押し！水分量が艶の命。',pt:'保湿が命'},
           {n:2,t:'下地を薄く',tip:'BBクリームを少量手にとり、内側から外側へ。首まで忘れずに。',pt:'薄く均一に'},
           {n:3,t:'ファンデを重ねる',tip:'スポンジをポンポン押し当てるだけ。こすらないのが韓国式。',pt:'たたき込む'},
@@ -324,7 +326,7 @@ const MAKEUP=[
    care:[
     {cat:'化粧水',name:'Water Bank Blue Hyaluronic Toner',brand:'Laneige',price:'¥4,400',rating:4.6,shopUrl:'https://jp.laneige.com/'},
     {cat:'美容液',name:'Advanced Snail 96 Mucin Essence',brand:'COSRX',price:'¥2,420',rating:4.8,shopUrl:'https://cosrx.co.kr/'}]},
-  {id:'m2',idol:'LISA',group:'BLACKPINK',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',lookName:'スモーキーアイメイク',lookDesc:'セクシーでクールな目元。暗めのアイシャドウをぼかしてつけるのが韓国流。',rating:4.6,reviewCount:436,colors:['#C0B8FF','#E0B0FF'],tags:['スモーキー','クール','グラマラス','ダーク'],
+  {id:'m2',idol:'LISA',group:'BLACKPINK',igAccount:'lalalalisa_m',lookName:'スモーキーアイメイク',lookDesc:'セクシーでクールな目元。暗めのアイシャドウをぼかしてつけるのが韓国流。',rating:4.6,reviewCount:436,colors:['#C0B8FF','#E0B0FF'],tags:['スモーキー','クール','グラマラス','ダーク'],
    steps:[{n:1,t:'アイベース塗布',tip:'まぶた全体にアイプライマーを。これがないと時間で消える！',pt:'プライマー必須'},
           {n:2,t:'ベースカラー',tip:'明るめのブラウンをブラシで目全体に広げる。',pt:'広く薄く'},
           {n:3,t:'スモーキーをのせる',tip:'濃いブラウン〜黒を目のキワに。指でぼかすと自然になる。',pt:'指でぼかす'},
@@ -340,23 +342,23 @@ const MAKEUP=[
    care:[
     {cat:'目元美容液',name:'FlashPatch Eye Gels',brand:'Patchology',price:'¥2,200',rating:4.5,shopUrl:'https://patchology.com/'},
     {cat:'クレンジング',name:'薬用ディープクレンジングオイル',brand:'DHC',price:'¥1,540',rating:4.7,shopUrl:'https://www.dhcj.com/'}]},
-  {id:'m3',idol:'WINTER',group:'aespa',photoUrl:'https://img.youtube.com/vi/jWQx2f-CErU/maxresdefault.jpg',lookName:'Y2Kグリッターメイク',lookDesc:'2000年代リバイバルのキラキラ目元。グリッターを涙袋にのせるだけで映える。',rating:4.5,reviewCount:328,colors:['#FFD0E8','#E8C8FF'],tags:['Y2K','グリッター','キラキラ','フェミニン'],
-   steps:[{n:1,t:'グリッター下準備',tip:'涙袋部分にアイプライマーを塗っておく。グリッターが落ちにくくなる。',pt:'密着度UP'},
-          {n:2,t:'グリッターをON',tip:'指先でグリッターを少量取り、涙袋の目頭から目尻へトントンと。',pt:'指でポンポン'},
-          {n:3,t:'リップをぽってりに',tip:'リップライナーで輪郭を少し大きめに描いてからグロスで仕上げ。',pt:'大きめが韓国式'},
-          {n:4,t:'ハイライトで完成',tip:'鼻先とキューピッドボウにハイライト。立体感が出る。',pt:'鼻先が重要'}],
+  {id:'m3',idol:'WINTER',group:'aespa',igAccount:'aespa_official',lookName:'スターステッカーメイク',lookDesc:'顔に星や月のステッカーを貼るK-beautyの最新トレンド。グラスシン肌に小さなスターを添えるだけで一気にアイドル感UP。',rating:4.5,reviewCount:328,colors:['#FFD0E8','#E8C8FF'],tags:['スターステッカー','韓国トレンド','キラキラ','アイドル'],
+   steps:[{n:1,t:'ベース仕上げ',tip:'グラスシン肌に仕上げる。ハイライトを鼻先・頬骨に薄くのせておく。',pt:'ツヤ肌が必須'},
+          {n:2,t:'ステッカーを選ぶ',tip:'小さめの星・月・ハートを選ぶ。100均やコンビニのシールでもOK。',pt:'小さめが可愛い'},
+          {n:3,t:'ステッカーを貼る',tip:'頬骨の下や目尻の端に1〜3枚。鏡で左右のバランスを確認。',pt:'対称が基本'},
+          {n:4,t:'仕上げのグロス',tip:'リップグロスをしっかりのせてぷっくり仕上げ。アイドル感MAX。',pt:'グロスは多め'}],
    items:[
-    {cat:'グリッター',name:'Bio Glitter ピンクゴールド',brand:'EcoStardust',price:'¥1,980',rating:4.4,shopUrl:'https://ecostardust.com/'},
-    {cat:'リップライナー',name:'Retractable Lip Liner',brand:'NYX',price:'¥1,540',rating:4.5,shopUrl:'https://nyxcosmetics.co.jp/'},
+    {cat:'フェイスステッカー',name:'Star Face Sticker ゴールド',brand:'DASIQUE',price:'¥1,320',rating:4.5,shopUrl:'https://zozo.jp/'},
     {cat:'グロス',name:'Plumping Gloss ベビーピンク',brand:'3CE',price:'¥2,420',rating:4.6,shopUrl:'https://www.stylenanda.com/'},
-    {cat:'ハイライター',name:'Beam Highlighting Powder',brand:'RMS Beauty',price:'¥5,280',rating:4.7,shopUrl:'https://rmsbeauty.com/'}],
+    {cat:'ハイライター',name:'Beam Highlighting Powder',brand:'RMS Beauty',price:'¥5,280',rating:4.7,shopUrl:'https://rmsbeauty.com/'},
+    {cat:'ファンデ',name:'Luminous Silk Foundation',brand:'Giorgio Armani',price:'¥11,220',rating:4.8,shopUrl:'https://www.giorgioarmanibeauty-jp.com/'}],
    tools:[
-    {cat:'グリッターブラシ',name:'ファングリッターブラシ',price:'¥1,650',rating:4.3,shopUrl:'https://www.sephora.co.jp/'},
-    {cat:'フィンガーブラシ',name:'シリコンアイシャドウブラシ',price:'¥880',rating:4.2,shopUrl:'https://zozo.jp/'}],
+    {cat:'スポンジ',name:'Beautyblender オリジナル',price:'¥2,640',rating:4.9,shopUrl:'https://beautyblender.com/'},
+    {cat:'ブラシ',name:'パウダーブラシ',brand:'HAKUHODO',price:'¥3,300',rating:4.7,shopUrl:'https://www.hakuhodo.bz/'}],
    care:[
-    {cat:'アイプライマー',name:'Eyeshadow Base Primer',brand:'NYX',price:'¥1,100',rating:4.5,shopUrl:'https://nyxcosmetics.co.jp/'},
-    {cat:'フェイスミスト',name:'フェイシャルスプレー ラベンダー',brand:'Mario Badescu',price:'¥2,200',rating:4.7,shopUrl:'https://mariobadescu.com/'}]},
-  {id:'m4',idol:'Yujin',group:'IVE',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',lookName:'ノームコアメイク',lookDesc:'頑張ってない風に見える、実は計算されたミニマルメイク。肌感が命。',rating:4.4,reviewCount:298,colors:['#A8E8C0','#80D8B0'],tags:['ナチュラル','ノームコア','クリーン','シンプル'],
+    {cat:'化粧水',name:'Water Bank Blue Hyaluronic Toner',brand:'Laneige',price:'¥4,400',rating:4.6,shopUrl:'https://jp.laneige.com/'},
+    {cat:'美容液',name:'Advanced Snail 96 Mucin Essence',brand:'COSRX',price:'¥2,420',rating:4.8,shopUrl:'https://cosrx.co.kr/'}]},
+  {id:'m4',idol:'Yujin',group:'IVE',igAccount:'official_ive',lookName:'ノームコアメイク',lookDesc:'頑張ってない風に見える、実は計算されたミニマルメイク。肌感が命。',rating:4.4,reviewCount:298,colors:['#A8E8C0','#80D8B0'],tags:['ナチュラル','ノームコア','クリーン','シンプル'],
    steps:[{n:1,t:'スキントーン補正',tip:'肌のくすみが気になる部分だけコンシーラーでカバー。全体に塗らない。',pt:'部分カバーのみ'},
           {n:2,t:'チークを先に',tip:'スキンティントやチークを先に塗ることで自然な血色感に。',pt:'ベース前にOK'},
           {n:3,t:'眉毛を整える',tip:'眉マスカラで毛流れを整えるだけ。書き足すのは最小限に。',pt:'毛流れが命'},
@@ -372,7 +374,7 @@ const MAKEUP=[
    care:[
     {cat:'日焼け止め',name:'パーフェクトUV スキンケアミルク',brand:'ANESSA',price:'¥2,200',rating:4.8,shopUrl:'https://www.shiseido.co.jp/anessa/'},
     {cat:'セラム',name:'グリーンティーシードセラム',brand:'INNISFREE',price:'¥2,860',rating:4.6,shopUrl:'https://jp.innisfree.com/'}]},
-  {id:'m5',idol:'Chaewon',group:'LE SSERAFIM',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',lookName:'オルチャンアイメイク',lookDesc:'韓国アイドルの特徴的な涙袋＆くっきり二重。アイライナーの引き方が秘訣。',rating:4.6,reviewCount:524,colors:['#FFD880','#FFAA60'],tags:['オルチャン','かわいい','涙袋','韓国風'],
+  {id:'m5',idol:'Chaewon',group:'LE SSERAFIM',igAccount:'official_le_sserafim',lookName:'オルチャンアイメイク',lookDesc:'韓国アイドルの特徴的な涙袋＆くっきり二重。アイライナーの引き方が秘訣。',rating:4.6,reviewCount:524,colors:['#FFD880','#FFAA60'],tags:['オルチャン','かわいい','涙袋','韓国風'],
    steps:[{n:1,t:'二重テープ',tip:'奥二重や一重の人は二重テープで幅を調整。韓国では普通のメイク術。',pt:'二重幅が決め手'},
           {n:2,t:'涙袋を作る',tip:'薄いベージュのシャドウを涙袋の位置に。下から指でぼかして立体感を出す。',pt:'ぼかしが重要'},
           {n:3,t:'インラインを引く',tip:'上まつ毛の根本（インライン）にペンシルで細く。目が自然に大きく見える。',pt:'根本をしっかり'},
@@ -388,7 +390,7 @@ const MAKEUP=[
    care:[
     {cat:'目元クリーム',name:'Cicapair アイクリーム',brand:'Dr.Jart+',price:'¥3,960',rating:4.6,shopUrl:'https://www.drjart.com/'},
     {cat:'シートマスク',name:'ハニールミナスマスク',brand:'JM Solution',price:'¥2,200',rating:4.7,shopUrl:'https://www.jmsolution.com/'}]},
-  {id:'m6',idol:'Nayeon',group:'TWICE',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',lookName:'ドールメイク',lookDesc:'ふんわりかわいいお人形みたいな仕上がり。ピンクのチークとグロスで完成。',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFD8B8'],tags:['ドール','かわいい','ピンク','フェミニン'],
+  {id:'m6',idol:'Nayeon',group:'TWICE',igAccount:'twicetagram',lookName:'ドールメイク',lookDesc:'ふんわりかわいいお人形みたいな仕上がり。ピンクのチークとグロスで完成。',rating:4.5,reviewCount:386,colors:['#FFB8CC','#FFD8B8'],tags:['ドール','かわいい','ピンク','フェミニン'],
    steps:[{n:1,t:'透明感ベース',tip:'ピンク系下地でくすみを飛ばす。白浮きしない薄いピンクが正解。',pt:'ピンク下地'},
           {n:2,t:'チークを高めに',tip:'頬骨より少し高い位置（目の下）にピンクチークをふんわり。',pt:'目の下に高め'},
           {n:3,t:'目元をかわいく',tip:'下まぶたにピンク系シャドウを指でポンポン。眠そうな目がかわいく見える。',pt:'下まぶたがPOINT'},
@@ -407,36 +409,36 @@ const MAKEUP=[
 ];
 
 const HAIR=[
-  {id:'h1',style:'ウルフカット',styleKo:'울프 컷',idol:'Haerin',group:'NewJeans',photoUrl:'https://img.youtube.com/vi/ZncbtRo7RXs/maxresdefault.jpg',difficulty:'普通',
-   desc:'前髪と毛先のレイヤーが特徴のK-POPアイドルに大人気スタイル。バングとサイドを短く切り、毛先にメリハリをつけることで小顔効果も。',
-   tip:'ストレートアイロンで毛先を少し内巻きにするだけで韓国風に！毎朝5分で完成。',
-   colors:['#A8D8FF','#B8F8E0'],tags:['ウルフ','レイヤー','ショート'],
-   tools:['ストレートアイロン（26mm）','ブロードライヤー','ヘアバーム']},
-  {id:'h2',style:'スパニッシュバング',styleKo:'스페니쉬 뱅',idol:'Wonyoung',group:'IVE',photoUrl:'https://img.youtube.com/vi/6ZUIwj3FgUY/maxresdefault.jpg',difficulty:'簡単',
-   desc:'韓国で超人気の前髪スタイル。スタイリング剤で前髪を二分割して細い毛束を作るだけで完成。ヨーロッパ女優みたいな雰囲気に。',
-   tip:'前髪を少し湿らせてからヘアクリームで束感を作ろう！ドライヤーは不要。',
-   colors:['#FFA8A8','#FFE8A8'],tags:['バング','前髪','ガーリー'],
-   tools:['ヘアスタイリングクリーム','細コーム','ヘアピン']},
-  {id:'h3',style:'シースルーバング',styleKo:'시스루 뱅',idol:'Chaewon',group:'LE SSERAFIM',photoUrl:'https://img.youtube.com/vi/bNKXxwOQYB8/maxresdefault.jpg',difficulty:'普通',
+  {id:'h1',style:'ツインブレード',styleKo:'트윈 브레이드',idol:'Chaewon',group:'LE SSERAFIM',igAccount:'official_le_sserafim',difficulty:'普通',
+   desc:'両サイドに編み込みをつくるかわいさ満点のスタイル。アイドルの私服やオフショットで大人気。リボンやバレッタで飾るとさらにかわいい。',
+   tip:'細めのゴムで毛先を留めてからほぐすと、ナチュラルでふんわりした仕上がりに。',
+   colors:['#FFD880','#FF9860'],tags:['ブレード','ツイン','アイドル風'],
+   tools:['ヘアゴム（細め×2）','ヘアバーム','リボンアクセサリー']},
+  {id:'h2',style:'リボンヘアアレンジ',styleKo:'리본 헤어',idol:'Wonyoung',group:'IVE',igAccount:'official_ive',difficulty:'簡単',
+   desc:'リボンを使ったアレンジは2026年最大のトレンド。ハーフアップに大きめリボンを添えるだけで一気にアイドルっぽい可愛さに。',
+   tip:'リボンは少し大きめを選ぶのがポイント。バレッタタイプなら不器用さんでも簡単！',
+   colors:['#FFA8A8','#FFE8A8'],tags:['リボン','ハーフアップ','フェミニン'],
+   tools:['大きめリボンバレッタ','ヘアゴム（細め）','ヘアバーム']},
+  {id:'h3',style:'ウィスピーバング',styleKo:'위스피 뱅',idol:'Haerin',group:'NewJeans',igAccount:'newjeans_official_',difficulty:'普通',
+   desc:'毛先をほんの少し散らした抜け感のある前髪。韓国の最新トレンドで、隙のある前髪がアイドル感を倍増させる。',
+   tip:'前髪をコテで軽く巻いたあと、バームで毛先だけ遊ばせると完璧なウィスピーに。',
+   colors:['#A8D8FF','#B8F8E0'],tags:['バング','前髪','抜け感'],
+   tools:['コテ（細め）','ヘアバーム','フィンガーコーム']},
+  {id:'h4',style:'ハーフアップお団子',styleKo:'하프업 번',idol:'KARINA',group:'aespa',igAccount:'aespa_official',difficulty:'簡単',
+   desc:'上半分をゆるくお団子にするハーフアップスタイル。完璧に作り込まず、ほどよくルーズに崩すのがアイドル流のこなれ感。',
+   tip:'お団子は少しルーズに作るのが正解。数本後れ毛を出してリボンで飾れば完成！',
+   colors:['#D8C8FF','#C0E4FF'],tags:['ハーフアップ','お団子','かわいい'],
+   tools:['ヘアゴム（細め）','Uピン','ヘアバーム']},
+  {id:'h5',style:'ロングウェーブ',styleKo:'롱 웨이브',idol:'JENNIE',group:'BLACKPINK',igAccount:'jennierubyjane',difficulty:'普通',
+   desc:'ロングヘアにゆるやかなウェーブをつけた女性らしいスタイル。毛先だけウェーブにするのがJENNIEらしいさり気なさ。',
+   tip:'コテ（32mm）で毛先のみ巻いて。仕上げにヘアオイルで艶を出すと洗練された印象に！',
+   colors:['#FFD4A0','#FFB0CC'],tags:['ロング','ウェーブ','フェミニン'],
+   tools:['コテ（32mm）','ヘアオイル','ブラシ']},
+  {id:'h6',style:'シースルーバング',styleKo:'시스루 뱅',idol:'Nayeon',group:'TWICE',igAccount:'twicetagram',difficulty:'普通',
    desc:'透け感のある薄い前髪。韓国アイドルの定番スタイルで、目が少し透けて見えるくらいの薄さが正解。清楚でナチュラルな印象に。',
    tip:'前髪を少量ずつ取り、コテで根本から軽く巻くと自然なシースルーに。',
-   colors:['#FFD880','#FF9860'],tags:['シースルー','前髪','ナチュラル'],
-   tools:['コテ（細め）','アイロン用スタイリング剤','ヘアスプレー']},
-  {id:'h4',style:'クリーンポニーテール',styleKo:'클린 포니테일',idol:'KARINA',group:'aespa',photoUrl:'https://img.youtube.com/vi/phuiiNCxRMg/maxresdefault.jpg',difficulty:'簡単',
-   desc:'K-POPアイドルが好む高め位置のポニーテール。サイドの毛をすっきりまとめて、ほんの少しだけ後れ毛を出すのが韓国流のこなれ感。',
-   tip:'ゴムで結んだあと、少しだけ毛束を引き出してルーズ感を演出しよう！',
-   colors:['#D8C8FF','#C0E4FF'],tags:['ポニー','クリーン','クール'],
-   tools:['ヘアゴム（太め）','ヘアピン','スタイリングジェル']},
-  {id:'h5',style:'ロング外ハネ',styleKo:'아웃컬 스타일',idol:'JENNIE',group:'BLACKPINK',photoUrl:'https://img.youtube.com/vi/gQlMMD8auMs/maxresdefault.jpg',difficulty:'普通',
-   desc:'ロングヘアを外向きにカールした女性らしいスタイル。全体ではなく毛先10〜15cmだけを外巻きにするのがJENNIEらしいさり気なさ。',
-   tip:'コテで毛先だけ外巻き。仕上げにヘアオイルをつけると艶やかで洗練された印象に！',
-   colors:['#FFD4A0','#FFB0CC'],tags:['ロング','外ハネ','フェミニン'],
-   tools:['コテ（32mm）','ヘアオイル','ブラシ']},
-  {id:'h6',style:'ハーフアップお団子',styleKo:'하프업 번',idol:'Nayeon',group:'TWICE',photoUrl:'https://img.youtube.com/vi/w4cTYnOPdNk/maxresdefault.jpg',difficulty:'簡単',
-   desc:'上半分をゆるくお団子にするハーフアップスタイル。完璧に作り込まず、ほどよくルーズに崩すのが韓国流でかわいい。',
-   tip:'お団子は少しルーズに作るのが正解。ピンで固定して、数本後れ毛を出せば完成！',
-   colors:['#FFB8CC','#FFF0B8'],tags:['ハーフアップ','お団子','かわいい'],
-   tools:['ヘアゴム（細め）','Uピン','ヘアバーム']}
+   colors:['#FFB8CC','#FFF0B8'],tags:['シースルー','前髪','ナチュラル'],
+   tools:['コテ（細め）','アイロン用スタイリング剤','ヘアスプレー']}
 ];
 
 const MUSIC=[
@@ -597,9 +599,10 @@ function shopRow(x,showBrand){
 function fashCard(item,sv){
   const c=JSON.stringify(item.colors),v=viewedItems.has(item.id)&&sv;
   return`<div class="icard" onclick="openF('${item.id}')" ontouchstart="startPress('${item.id}',event)" ontouchend="endPress()" ontouchmove="endPress()" oncontextmenu="return false;">
-    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.idol}">`:''}
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>
     <div class="photo-ov"></div>
     <button class="like-btn${savedItems.has(item.id)?' liked':''}" data-id="${item.id}" onclick="toggleSave('${item.id}',event)">${savedItems.has(item.id)?'♥':'♡'}</button>
+    ${item.igAccount?`<a class="ig-btn" href="https://www.instagram.com/${item.igAccount}/" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>IG</a>`:''}
     ${v?'<div class="viewed-dot"></div>':''}
     <div class="photo-cap"><div class="photo-idol">${item.idol}</div><div class="photo-grp">${item.group}</div></div></div>
     <div class="icard-body"><div class="style-chip">${item.styleTag}</div><div class="icard-brand">${item.items[0].name}</div><div class="icard-price">${item.items[0].price}</div>
@@ -609,9 +612,10 @@ function fashCard(item,sv){
 function mkCard(item,sv){
   const c=JSON.stringify(item.colors),v=viewedItems.has(item.id)&&sv;
   return`<div class="icard" onclick="openM('${item.id}')" ontouchstart="startPress('${item.id}',event)" ontouchend="endPress()" ontouchmove="endPress()" oncontextmenu="return false;">
-    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.idol}">`:''}
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.idol[0]}"></canvas>
     <div class="photo-ov"></div>
     <button class="like-btn${savedItems.has(item.id)?' liked':''}" data-id="${item.id}" onclick="toggleSave('${item.id}',event)">${savedItems.has(item.id)?'♥':'♡'}</button>
+    ${item.igAccount?`<a class="ig-btn" href="https://www.instagram.com/${item.igAccount}/" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>IG</a>`:''}
     ${v?'<div class="viewed-dot"></div>':''}
     <div class="photo-cap"><div class="photo-idol">${item.idol}</div><div class="photo-grp">${item.group}</div></div></div>
     <div class="icard-body"><div class="style-chip">${item.lookName}</div><div class="icard-brand">${item.items[0].name}</div><div class="icard-price">${item.items[0].price}</div>
@@ -621,8 +625,9 @@ function mkCard(item,sv){
 function hairCard(item){
   const c=JSON.stringify(item.colors);
   return`<div class="icard" onclick="openH('${item.id}')">
-    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.style[0]}"></canvas>${item.photoUrl?`<img src="${item.photoUrl}" onerror="imgFallback(this)" loading="lazy" alt="${item.style}">`:''}
+    <div class="icard-photo"><canvas data-col='${c}' data-ini="${item.style[0]}"></canvas>
     <div class="photo-ov"></div>
+    ${item.igAccount?`<a class="ig-btn" href="https://www.instagram.com/${item.igAccount}/" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>IG</a>`:''}
     <div class="photo-cap"><div class="photo-idol">${item.style}</div><div class="photo-grp">${item.styleKo}</div></div></div>
     <div class="icard-body"><div class="hair-diff">${item.difficulty}</div><div class="icard-brand">${item.idol} · ${item.group}</div><div class="icard-price">${item.tags.slice(0,2).join(' · ')}</div></div>
   </div>`;
